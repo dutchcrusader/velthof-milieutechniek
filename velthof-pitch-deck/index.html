@@ -1004,17 +1004,6 @@
           });
         }
 
-        // hero parallax (subtle, desktop only)
-        const heroImg = document.getElementById('heroImg');
-        if (window.matchMedia('(pointer: fine)').matches && !reducedMotion) {
-          window.addEventListener('mousemove', (e) => {
-            if (current !== 0) return;
-            const x = (e.clientX / window.innerWidth - 0.5) * 14;
-            const y = (e.clientY / window.innerHeight - 0.5) * 14;
-            heroImg.style.transform = `scale(1.12) translate(${x}px, ${y}px)`;
-          });
-        }
-
         // initial reveal
         playReveals(0);
       })();
