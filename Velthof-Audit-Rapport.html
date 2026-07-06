@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit — Velthof Milieutechniek</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;700;800&family=Public+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style type="text/tailwindcss">
+@layer base {
+  body { font-family: 'Bricolage Grotesque', sans-serif; color: #1a1a1a; background: #ffffff; }
+  h1, h2, h3 { font-family: 'Bricolage Grotesque', sans-serif; letter-spacing: -0.02em; }
+  h2 {
+    font-size: 1.875rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1.25rem;
+    color: #121212; border-top: 1px solid #e8e4dc; padding-top: 2rem;
+    display: flex; align-items: baseline; gap: 0.75rem;
+  }
+  h3 { font-size: 1.3rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; color: #1a1a1a; }
+  p { margin-bottom: 1rem; line-height: 1.75; color: #3a3530; }
+  a { color: #F15D12; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul { margin-bottom: 1rem; padding-left: 1.25rem; list-style-type: disc; }
+  ol { margin-bottom: 1rem; padding-left: 1.25rem; list-style-type: decimal; }
+  li { margin-bottom: 0.5rem; line-height: 1.65; color: #3a3530; }
+  hr { border: none; border-top: 1px solid #e8e4dc; margin: 2rem 0; }
+  code { font-family: 'DM Mono', monospace; background: #f0ece6; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.82em; color: #1a1a1a; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  th { background: #121212; color: rgba(242,242,242,0.9); padding: 0.7rem 1rem; text-align: left; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  td { border-bottom: 1px solid #ede8e2; padding: 0.75rem 1rem; vertical-align: middle; color: #3a3530; background: #ffffff; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f8f8f6; }
+  strong { font-weight: 600; color: #1a1a1a; }
+}
+@layer components {
+  .sidebar { background: #ffffff; border-right: 1px solid #e8e4dc; }
+  .toc-group-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6B6B6B; padding: 1.25rem 1rem 0.4rem; }
+  .toc-link { display: block; padding: 0.3rem 1rem; font-size: 0.8rem; color: #4a4540; border-left: 2px solid transparent; transition: all 0.15s; }
+  .toc-link:hover { color: #F15D12; border-left-color: #F15D12; text-decoration: none; background: #f8f8f6; }
+  .toc-link.active { color: #F15D12; border-left-color: #F15D12; background: #fff7f0; font-weight: 500; }
+  .toc-link-sub { padding-left: 1.75rem; font-size: 0.75rem; }
+  .top-nav { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid #e8e4dc; }
+  .badge { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; padding: 0.18rem 0.55rem; border-radius: 9999px; text-transform: uppercase; white-space: nowrap; }
+  .badge-kritisch { background: #fee2e2; color: #9b1c1c; }
+  .badge-matig { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  .badge-laag { background: #ede9fe; color: #5b21b6; }
+  .badge-goed { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  .badge-waarschuwing { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
+  .kpi-card { background: #fff; border: 1px solid #e8e4dc; border-radius: 14px; padding: 1.25rem; }
+  .kpi-card-red { background: #fff7f0; border-color: #fed8c0; }
+  .phase-card { background: #fff; border: 1px solid #e8e4dc; border-radius: 14px; padding: 1.5rem 1.75rem; margin-bottom: 2rem; }
+  .phase-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: rgba(241,93,18,0.08); float: right; margin-top: -0.5rem; letter-spacing: -0.04em; }
+  .alert-orange { background: #fff7f0; border-left: 3px solid #F15D12; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+  .alert-orange p { color: #7a2e0a; margin: 0; }
+  .sec-num { font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.9rem; font-weight: 500; color: #6B6B6B; flex-shrink: 0; letter-spacing: -0.02em; }
+  @media print {
+    .top-nav, aside { display: none !important; }
+    main { margin-left: 0 !important; padding: 2rem !important; }
+    body { background: white; }
+    .cover-card { break-inside: avoid; }
+  }
+}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Top Nav -->
+<nav class="top-nav fixed top-0 left-0 right-0 z-50 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-[#121212] flex items-center justify-center flex-shrink-0">
+      <span class="text-[#F15D12] font-bold text-sm" style="font-family:'Bricolage Grotesque',sans-serif">SO</span>
+    </div>
+    <div>
+      <div class="text-xs font-semibold text-gray-800" style="font-family:'Bricolage Grotesque',sans-serif; font-size:1rem; line-height:1.2; letter-spacing:-0.02em">Velthof Milieutechniek</div>
+      <div class="text-[9px] uppercase tracking-widest text-gray-400 leading-tight">Website Audit Rapport</div>
+    </div>
+    <div class="hidden md:block w-px h-6 bg-gray-200 mx-2"></div>
+    <div class="hidden md:block text-xs text-gray-400">Studio Orange · 3 juli 2026</div>
+  </div>
+  <div class="flex items-center gap-5 text-xs text-gray-500">
+    <a href="#executive-summary" class="hidden md:block hover:text-[#F15D12] transition-colors">Samenvatting</a>
+    <a href="#2-technische-audit" class="hidden md:block hover:text-[#F15D12] transition-colors">Techniek</a>
+    <a href="#6-strategische-aanbevelingen" class="hidden md:block hover:text-[#F15D12] transition-colors">Strategie</a>
+    <button onclick="window.print()" class="bg-[#F15D12] text-[#121212] text-xs font-semibold px-4 py-2 rounded-lg hover:bg-[#d4500f] transition-colors">Exporteer PDF</button>
+  </div>
+</nav>
+
+<div class="flex pt-14">
+
+  <!-- Sidebar -->
+  <aside class="sidebar hidden lg:block w-64 fixed left-0 top-14 bottom-0 overflow-y-auto">
+
+    <!-- Client card -->
+    <div class="px-4 py-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-9 h-9 rounded-full bg-[#121212] flex items-center justify-center flex-shrink-0">
+          <span class="text-[#F15D12] font-bold text-xs" style="font-family:'Bricolage Grotesque',sans-serif">VM</span>
+        </div>
+        <div>
+          <div class="text-sm font-semibold text-gray-800 leading-tight" style="font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.02em">Velthof</div>
+          <div class="text-[10px] text-gray-400">Milieutechniek</div>
+        </div>
+      </div>
+      <div class="text-[10px] text-gray-400 space-y-0.5">
+        <div>Oldenzaal · Twente</div>
+        <div>RVS afvalpersen · Made in Holland</div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <nav aria-label="Inhoudsopgave">
+      <div class="toc-group-label">Inleiding</div>
+      <a href="#executive-summary" class="toc-link">Executive Summary</a>
+      <a href="#1-bedrijfsprofiel-propositie" class="toc-link">1. Bedrijfsprofiel</a>
+
+      <div class="toc-group-label">Audit</div>
+      <a href="#2-technische-audit" class="toc-link">2. Technische Audit</a>
+      <a href="#21-platform-infrastructuur" class="toc-link toc-link-sub">Platform & Infrastructuur</a>
+      <a href="#22-seo-technisch" class="toc-link toc-link-sub">SEO-Technisch</a>
+      <a href="#23-performance" class="toc-link toc-link-sub">Performance</a>
+      <a href="#24-beveiliging-privacy" class="toc-link toc-link-sub">Beveiliging & Privacy</a>
+      <a href="#25-mobiele-ervaring" class="toc-link toc-link-sub">Mobiele Ervaring</a>
+      <a href="#3-ux-design-analyse" class="toc-link">3. UX & Design</a>
+      <a href="#4-content-seo-analyse" class="toc-link">4. Content & SEO</a>
+      <a href="#5-concurrentie-analyse" class="toc-link">5. Concurrentie</a>
+
+      <div class="toc-group-label">Aanbevelingen</div>
+      <a href="#6-strategische-aanbevelingen" class="toc-link">6. Strategie</a>
+      <a href="#fase-1-quick-wins" class="toc-link toc-link-sub">Fase 1: Quick Wins</a>
+      <a href="#fase-2-conversie-design" class="toc-link toc-link-sub">Fase 2: Conversie & Design</a>
+      <a href="#fase-3-groei-content" class="toc-link toc-link-sub">Fase 3: Groei & Content</a>
+      <a href="#7-conclusie" class="toc-link">7. Conclusie</a>
+
+      <div class="toc-group-label">Bijlagen</div>
+      <a href="#bijlage-a-productcategorieen" class="toc-link">Bijlage A: Producten</a>
+      <a href="#bijlage-b-technische-details" class="toc-link">Bijlage B: Techniek</a>
+    </nav>
+
+    <!-- Studio Orange branding -->
+    <div class="px-4 py-5 mt-auto border-t border-gray-100">
+      <div class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Opgesteld door</div>
+      <div class="text-sm font-semibold text-gray-700" style="font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.02em">Studio Orange</div>
+      <div class="text-[10px] text-gray-400">3 juli 2026 · Vertrouwelijk</div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 lg:ml-64 min-w-0">
+    <div class="max-w-3xl mx-auto px-6 md:px-10 py-10">
+
+      <!-- Cover card -->
+      <div class="cover-card relative rounded-2xl overflow-hidden mb-10" style="background:#121212">
+        <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle, #F15D12 1.5px, transparent 1.5px); background-size: 20px 20px;"></div>
+        <div class="relative p-10 md:p-14">
+          <div class="flex items-start justify-between mb-10">
+            <div class="w-14 h-14 rounded-full bg-[#F15D12] flex items-center justify-center flex-shrink-0 shadow-md">
+              <span class="text-[#121212] font-bold text-lg" style="font-family:'Bricolage Grotesque',sans-serif">VM</span>
+            </div>
+            <div class="text-right">
+              <div class="text-[#F2F2F2] text-sm font-semibold" style="font-family:'Bricolage Grotesque',sans-serif; font-size:1.1rem; letter-spacing:-0.02em">Studio Orange</div>
+              <div class="text-white/50 text-xs mt-0.5">3 juli 2026</div>
+              <div class="text-white/40 text-[10px] uppercase tracking-widest mt-1">Vertrouwelijk</div>
+            </div>
+          </div>
+          <div class="text-[#F15D12] text-[11px] uppercase tracking-[0.2em] mb-4 font-semibold">Website Audit & Strategisch Plan</div>
+          <h1 class="text-white font-bold leading-[1.05] mb-6" style="font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(2.25rem,5vw,3.75rem); color:white; margin:0 0 1.5rem 0; border:none; padding:0; letter-spacing:-0.03em">
+            Velthof<br>Milieutechniek
+          </h1>
+          <div class="flex flex-wrap items-center gap-3 text-white/50 text-xs">
+            <span>velthofmilieutechniek.nl</span>
+            <span class="opacity-40">·</span>
+            <span>Oldenzaal</span>
+            <span class="opacity-40">·</span>
+            <span>RVS afvalpersen</span>
+            <span class="opacity-40">·</span>
+            <span>Made in Holland</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kernbevindingen -->
+      <div class="mb-10" style="background:#121212; border-radius:14px; padding:1.75rem;">
+        <div class="text-[#F15D12] text-[10px] uppercase tracking-[0.2em] font-semibold mb-3">Kernbevindingen</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+          <div class="flex gap-3 items-start">
+            <span class="text-[#F15D12] font-bold text-sm flex-shrink-0 mt-0.5" style="font-family:'Bricolage Grotesque',sans-serif">1</span>
+            <div>
+              <div class="text-white/90 text-sm font-medium">Meta descriptions ontbreken</div>
+              <div class="text-white/40 text-xs mt-0.5">Op alle pagina's — Google ziet geen beschrijving van de site</div>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[#F15D12] font-bold text-sm flex-shrink-0 mt-0.5" style="font-family:'Bricolage Grotesque',sans-serif">2</span>
+            <div>
+              <div class="text-white/90 text-sm font-medium">"Over ons" pagina geeft 404</div>
+              <div class="text-white/40 text-xs mt-0.5">Het belangrijkste vertrouwenselement ontbreekt</div>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[#F15D12] font-bold text-sm flex-shrink-0 mt-0.5" style="font-family:'Bricolage Grotesque',sans-serif">3</span>
+            <div>
+              <div class="text-white/90 text-sm font-medium">Geen productfoto's of video's</div>
+              <div class="text-white/40 text-xs mt-0.5">Machines worden alleen tekstueel gepresenteerd</div>
+            </div>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-[#F15D12] font-bold text-sm flex-shrink-0 mt-0.5" style="font-family:'Bricolage Grotesque',sans-serif">4</span>
+            <div>
+              <div class="text-white/90 text-sm font-medium">Schema.org markup volledig afwezig</div>
+              <div class="text-white/40 text-xs mt-0.5">Geen gestructureerde data voor zoekmachines</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metadata -->
+      <div class="bg-white rounded-xl border border-gray-100 divide-y divide-gray-100 mb-4 text-sm">
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Datum</span><span class="text-gray-700">3 juli 2026</span></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Auditor</span><span class="text-gray-700">Studio Orange</span></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Website</span><a href="https://velthofmilieutechniek.nl" class="text-[#F15D12]">velthofmilieutechniek.nl</a></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Bedrijf</span><span class="text-gray-700">Velthof Milieutechniek, Oldenzaal</span></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Contact</span><span class="text-gray-700">Niels Velthof</span></div>
+      </div>
+
+      <hr>
+
+      <!-- Executive Summary -->
+      <h2 id="executive-summary">Executive Summary</h2>
+
+      <p>Velthof Milieutechniek is een producent van RVS afvalpersen en aanverwante afvalverwerkingsmachines, gevestigd in Oldenzaal. Het bedrijf maakt sterke producten - roestvrijstalen persen, balenpersen, glasbrekers en shredders - maar de huidige website doet geen recht aan het vakmanschap. Het is een functionele WordPress/Divi-site die technisch oké is, maar visueel gedateerd en zonder overtuigende verkoopkracht.</p>
+
+      <p><strong>Kernproblemen:</strong></p>
+      <ol>
+        <li>Visueel gedateerd - standaard Divi-look zonder industriële uitstraling</li>
+        <li>Geen "Over ons" pagina (404) - geen bedrijfsverhaal, geen vertrouwenopbouw</li>
+        <li>Producten worden slecht gepresenteerd - geen foto's van machines in actie, geen duidelijke specificaties</li>
+        <li>Meta description ontbreekt - onzichtbaar in Google</li>
+        <li><code>user-scalable=0</code> op mobiel - slecht voor toegankelijkheid en SEO</li>
+        <li>Geen social proof, cases of referenties</li>
+        <li>Website ademt niet het niveau van de producten</li>
+      </ol>
+
+      <p><strong>Kansen:</strong></p>
+      <ul>
+        <li>Sterk onderscheidend vermogen: Made in Holland, RVS, direct af fabriek</li>
+        <li>Diverse productlijn (9 categorieën) met ruimte voor betere presentatie</li>
+        <li>Markt van afvalverwerking groeit (duurzaamheid, recycling)</li>
+        <li>Media Kanjers liet hem vallen - Niels is klaar om te schakelen</li>
+      </ul>
+
+      <p><strong>Aanbevolen aanpak:</strong> Fase 1 (quick wins: SEO, "Over ons", techniek) &rarr; Fase 2 (herontwerp, productpresentatie, conversie) &rarr; Fase 3 (groei, content, zichtbaarheid).</p>
+
+      <hr>
+
+      <!-- Section 1 -->
+      <h2 id="1-bedrijfsprofiel-propositie"><span class="sec-num">01</span> Bedrijfsprofiel & Propositie</h2>
+
+      <h3 id="over-velthof">Over Velthof Milieutechniek</h3>
+      <table>
+        <thead><tr><th>Veld</th><th>Waarde</th></tr></thead>
+        <tbody>
+          <tr><td>Naam</td><td>Velthof Milieutechniek</td></tr>
+          <tr><td>Contactpersoon</td><td>Niels Velthof</td></tr>
+          <tr><td>Locatie</td><td>Waterwinweg 35, 7572 PD Oldenzaal</td></tr>
+          <tr><td>Telefoon</td><td>06-30627623</td></tr>
+          <tr><td>Email</td><td>info@velthofmilieutechniek.nl</td></tr>
+          <tr><td>Specialisatie</td><td>Ontwerp en productie van RVS afvalpersen</td></tr>
+          <tr><td>Productcategorieën</td><td>Afvalpersen, RVS persen, garbage compactors, balenpersen, occasions, afbindband, glasbrekers, bandversnipperaars, shredders</td></tr>
+          <tr><td>USP</td><td>Made in Holland, RVS vakmanschap, direct af fabriek, scherpe prijzen</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="website-structuur">Huidige website-structuur</h3>
+      <table>
+        <thead><tr><th>Pagina</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Contact</td><td><span class="badge badge-goed">Bestaat (met formulier)</span></td></tr>
+          <tr><td>Offertes aanvragen</td><td><span class="badge badge-goed">Link in menu</span></td></tr>
+          <tr><td>Producten / Afval persen</td><td><span class="badge badge-goed">VMT 1100, VMT 1300, Kliko pers</span></td></tr>
+          <tr><td>Producten / RVS persen</td><td><span class="badge badge-goed">VMT 4000, VMT 500</span></td></tr>
+          <tr><td>Producten / Garbage compactor</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / Balenpersen</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / Occasions</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / Afbindband</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / Bottlenecker / Glasbreker</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / CBC Bandversnipperaar</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Producten / Shredders</td><td><span class="badge badge-goed">Bestaat</span></td></tr>
+          <tr><td>Over ons</td><td><span class="badge badge-kritisch">404 - bestaat niet</span></td></tr>
+          <tr><td>Producten (overzicht)</td><td><span class="badge badge-matig">Minimaal</span></td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <!-- Section 2 -->
+      <h2 id="2-technische-audit"><span class="sec-num">02</span> Technische Audit</h2>
+
+      <h3 id="21-platform-infrastructuur">2.1 Platform & Infrastructuur</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>CMS</td><td>WordPress (laatste versie)</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Theme</td><td>Divi</td><td><span class="badge badge-waarschuwing">Zwaar, veel bloat</span></td></tr>
+          <tr><td>Page builder</td><td>Divi Builder</td><td><span class="badge badge-waarschuwing">Eigen systeem</span></td></tr>
+          <tr><td>HTTPS</td><td>Actief, geldig certificaat</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Hosting</td><td>Apache/2</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Laadtijd</td><td>0.064s (server)</td><td><span class="badge badge-goed">Snel</span></td></tr>
+          <tr><td>Yoast SEO</td><td>v27.9, actief</td><td><span class="badge badge-goed">Goed</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="22-seo-technisch">2.2 SEO-Technisch</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>Meta description</td><td><strong>Leeg op alle pagina's</strong></td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+          <tr><td>H1-tags</td><td>Aanwezig (pagina-titels)</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>H2-structuur</td><td>Weinig diepgang</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          <tr><td>Canonical URLs</td><td>WordPress-standaard</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Open Graph tags</td><td>Aanwezig (Divi)</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Schema.org</td><td><strong>Niet aanwezig</strong></td><td><span class="badge badge-matig">Matig</span></td></tr>
+          <tr><td>Sitemap.xml</td><td>WordPress-eigen sitemap</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Alt-attributen</td><td>Aanwezig</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Language tag</td><td><code>lang="nl"</code></td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>URL-structuur</td><td>Schoon</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td><code>user-scalable=no</code></td><td><strong>Aanwezig in viewport</strong></td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="23-performance">2.3 Performance</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>Server-respons</td><td>Zeer snel (0.064s)</td></tr>
+          <tr><td>Afbeeldingen</td><td>Geen WebP, geen srcset - laden full-size</td></tr>
+          <tr><td>CSS/JS</td><td>29 scripts geladen (Divi bloat)</td></tr>
+          <tr><td>Lazy loading</td><td>Niet actief</td></tr>
+          <tr><td>Caching</td><td>Server-side caching actief</td></tr>
+          <tr><td>Minimificatie</td><td>Niet actief</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert-orange">
+        <p>Divi produceert 29 scripts en zwaar niet-geoptimaliseerde afbeeldingen. De server is snel, maar de frontend levert de bezoeker een trage ervaring op. Zonder lazy loading, WebP en minimalisatie blijft mobiele performance structureel onder de maat.</p>
+      </div>
+
+      <h3 id="24-beveiliging-privacy">2.4 Beveiliging & Privacy</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>SSL/HTTPS</td><td><span class="badge badge-goed">Actief</span></td></tr>
+          <tr><td>Cookiebanner</td><td><span class="badge badge-matig">Niet zichtbaar</span></td></tr>
+          <tr><td>Privacyverklaring</td><td><span class="badge badge-matig">Niet zichtbaar</span></td></tr>
+          <tr><td>Contactformulier</td><td><span class="badge badge-goed">Aanwezig (8 velden)</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="25-mobiele-ervaring">2.5 Mobiele Ervaring</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>Viewport</td><td><span class="badge badge-goed">Ingesteld</span>, maar <code>user-scalable=no</code></td></tr>
+          <tr><td>Responsive</td><td><span class="badge badge-waarschuwing">Divi is responsive, maar afbeeldingen schalen niet mee (geen srcset)</span></td></tr>
+          <tr><td>Touch-targets</td><td>Navigatie oké, maar kleine knoppen</td></tr>
+          <tr><td>Mobiele CTA</td><td>Geen sticky contactknop of click-to-call</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <!-- Section 3 -->
+      <h2 id="3-ux-design-analyse"><span class="sec-num">03</span> UX & Design Analyse</h2>
+
+      <h3 id="31-visueel-ontwerp">3.1 Visueel Ontwerp</h3>
+      <p><strong>Huidige look:</strong> Standaard Divi. Witte achtergrond, blauwe accenten, generieke typografie. De site oogt functioneel maar mist elke industriële uitstraling.</p>
+      <p><strong>Probleem:</strong> Een bedrijf dat RVS afvalpersen maakt - robuust, technisch, duurzaam - zou een website moeten hebben die dat uitstraalt. Nu voelt het als een generiek WordPress-template. De producten zijn sterker dan de website.</p>
+
+      <h3 id="32-homepage-analyse">3.2 Homepage-analyse</h3>
+      <p><strong>Opbouw:</strong></p>
+      <ol>
+        <li>Header met logo + navigatie</li>
+        <li>Titel "VELTHOF MILIEUTECHNIEK, PRODUCENT VAN RVS AFVALPERSEN."</li>
+        <li>Korte bedrijfstekst + verwijzing naar scherpe prijzen</li>
+        <li>Link naar afbindband (sidebar)</li>
+        <li>Link naar bestellen omsnoeringsband (sidebar)</li>
+      </ol>
+      <p><strong>Problemen:</strong></p>
+      <ul>
+        <li>Geen hero-image of visuele opening - alleen tekst</li>
+        <li>Geen productfoto's op de homepage</li>
+        <li>Geen CTA naar producten of contact (alleen tekstlink)</li>
+        <li>Bedrijfstekst vermeldt "Haaksbergen" maar adres is Oldenzaal</li>
+        <li>Sidebar met omsnoeringsband is storend op een B2B-site</li>
+      </ul>
+
+      <h3 id="33-navigatie">3.3 Navigatie</h3>
+      <table>
+        <thead><tr><th>Menu-item</th><th>Doel</th><th>Probleem</th></tr></thead>
+        <tbody>
+          <tr><td>HOME</td><td>Introductie</td><td>Passief, geen waardepropositie</td></tr>
+          <tr><td>PRODUCTEN (dropdown)</td><td>Assortiment</td><td>9 categorieën - goede structuur, slechte presentatie</td></tr>
+          <tr><td>CONTACT</td><td>Contactgegevens</td><td>Functioneel formulier</td></tr>
+          <tr><td>OFFERTE AANVRAGEN</td><td>Leadgeneratie</td><td>Goede intentie, maar link naar contactformulier</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="34-productpaginas">3.4 Productpagina's</h3>
+      <p><strong>Sterke punten:</strong></p>
+      <ul>
+        <li>Logische categorisering (9 categorieën)</li>
+        <li>RVS VMT 4000 heeft specificaties (afmetingen, gewicht, vermogen)</li>
+        <li>Kliko Pers, VMT 1100, VMT 1300 hebben beschrijvingen</li>
+      </ul>
+      <p><strong>Zwakke punten:</strong></p>
+      <ul>
+        <li><strong>Geen productfoto's</strong> (alleen beschrijvende tekst)</li>
+        <li>Geen video's van machines in actie</li>
+        <li>Geen duidelijke productvergelijking</li>
+        <li>PDF-downloads aanwezig maar niet prominent</li>
+        <li>Geen "Offerte aanvragen" per product</li>
+        <li>Specificaties alleen bij VMT 4000, niet bij andere producten</li>
+      </ul>
+
+      <h3 id="35-contactpagina">3.5 Contactpagina</h3>
+      <p><strong>Inhoud:</strong> Bedrijf*, Naam*, Adres*, Postcode*, Woonplaats*, Telefoon*, E-mailadres*, Uw bericht* + kaart.</p>
+      <p><strong>Pluspunten:</strong></p>
+      <ul>
+        <li>Formulier met alle benodigde velden</li>
+        <li>Google Maps embed</li>
+      </ul>
+      <p><strong>Verbeterpunten:</strong></p>
+      <ul>
+        <li>Geen afdelingsselectie</li>
+        <li>Geen directe offerte-aanvraag</li>
+        <li>Geen openingstijden</li>
+      </ul>
+
+      <hr>
+
+      <!-- Section 4 -->
+      <h2 id="4-content-seo-analyse"><span class="sec-num">04</span> Content & SEO Analyse</h2>
+
+      <h3 id="41-content-kwaliteit">4.1 Content-kwaliteit</h3>
+      <table>
+        <thead><tr><th>Pagina</th><th>Woordenaantal</th><th>Kwaliteit</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td>~80</td><td>Kort, functioneel</td></tr>
+          <tr><td>Afval persen</td><td>~100</td><td>Goede beschrijving, maar geen diepgang</td></tr>
+          <tr><td>RVS persen</td><td>~50</td><td>Minimaal</td></tr>
+          <tr><td>Contact</td><td>~10</td><td>Puur informatief</td></tr>
+        </tbody>
+      </table>
+      <p><strong>Probleem:</strong> Te weinig content voor B2B-SEO. Geen diepgang over:</p>
+      <ul>
+        <li>Het productieproces (RVS-laswerk, engineering)</li>
+        <li>Kwaliteit en materialen (roestvrij staal, duurzaamheid)</li>
+        <li>Voordelen van een pers (kostenbesparing, ruimte, milieu)</li>
+        <li>Cases en toepassingen per sector</li>
+        <li>Bedrijfsgeschiedenis (wie is Niels, waarom RVS?)</li>
+      </ul>
+
+      <h3 id="42-zoekwoordkansen">4.2 Zoekwoordkansen</h3>
+      <p>Huidige site scoort niet op belangrijke B2B-zoektermen zoals:</p>
+      <ul>
+        <li>"RVS afvalpers kopen"</li>
+        <li>"afvalpers fabrikant Nederland"</li>
+        <li>"afval verwerken met pers"</li>
+        <li>"balenpers papier karton"</li>
+        <li>"glasbreker machine"</li>
+        <li>"shredder afval"</li>
+        <li>"garbage compactor Nederland"</li>
+      </ul>
+
+      <h3 id="43-contentgaten">4.3 Contentgaten</h3>
+      <ul>
+        <li><strong>Geen "Over ons"</strong> - het belangrijkste vertrouwenselement ontbreekt</li>
+        <li><strong>Geen blog of kennisbank</strong> - geen uitleg over afvalvermindering, ROI, branches</li>
+        <li><strong>Geen video's</strong> - een pers in actie is vele malen overtuigender dan tekst</li>
+        <li><strong>Geen cases of referenties</strong> - wie gebruikt zijn persen? Wat besparen ze?</li>
+        <li><strong>Geen downloadbare catalogus</strong></li>
+      </ul>
+
+      <hr>
+
+      <!-- Section 5 -->
+      <h2 id="5-concurrentie-analyse"><span class="sec-num">05</span> Concurrentie-analyse</h2>
+
+      <h3 id="51-directe-concurrenten">5.1 Directe concurrenten</h3>
+
+      <p><strong>Orwak (Zweden/SULO Group)</strong> - www.orwak.com</p>
+      <ul>
+        <li>Zeer professionele, internationale website</li>
+        <li>Ruim productaanbod: verticale persen, compactoren, balenpersen</li>
+        <li>Sterke contentmarketing: nieuws, cases, video's</li>
+        <li>Maar: internationaal concern, geen persoonlijke service</li>
+        <li>Velthof kan winnen op: <strong>lokale aanwezigheid, RVS specialisme, made in Holland</strong></li>
+      </ul>
+
+      <p><strong>Bramidan (Denemarken)</strong> - www.bramidan.com</p>
+      <ul>
+        <li>Strakke B2B-site met uitstekende productpresentatie</li>
+        <li>Sinds 1975, Deense kwaliteit</li>
+        <li>Categorieën: vertical/horizontal balers, compactoren</li>
+        <li>Maar: groothandelsprijs, geen maatwerk</li>
+        <li>Velthof kan winnen op: <strong>maatwerk, RVS, flexibiliteit, direct contact</strong></li>
+      </ul>
+
+      <p><strong>Husmann (Duitsland)</strong></p>
+      <ul>
+        <li>Afvalpersen en compactoren</li>
+        <li>Technisch sterk, Duitse markt</li>
+        <li>Traditionele website</li>
+        <li>Velthof kan winnen op: <strong>scherpe prijzen, korte lijnen, Nederlandse markt</strong></li>
+      </ul>
+
+      <h3 id="52-conclusie">5.2 Conclusie</h3>
+      <p>Velthof concurreert niet op schaal met Orwak of Bramidan. Zijn kracht is:</p>
+      <ul>
+        <li><strong>Lokaal & bereikbaar</strong> - Oldenzaal, direct contact met Niels</li>
+        <li><strong>Specialistisch</strong> - RVS is zijn ding, geen standaard-metaal</li>
+        <li><strong>Maatwerk</strong> - niet alleen catalogusproducten</li>
+        <li><strong>Made in Holland</strong> - kwaliteit, korte lijnen, trots</li>
+        <li><strong>Prijs</strong> - direct af fabriek, geen tussenhandel</li>
+      </ul>
+      <p>De website moet die boodschap uitstralen: geen kopie van grote jongens, maar een trotse, nuchtere Nederlandse maker.</p>
+
+      <hr>
+
+      <!-- Section 6 -->
+      <h2 id="6-strategische-aanbevelingen"><span class="sec-num">06</span> Strategische Aanbevelingen</h2>
+
+      <!-- Phase 1 -->
+      <div class="phase-card" id="fase-1-quick-wins">
+        <div class="phase-num" aria-hidden="true">1</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#F15D12] font-semibold mb-1">Fase 1 · Week 1-2</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">Quick Wins</h3>
+        <div class="text-sm text-gray-500 mb-5">Doel: technische tekortkomingen oplossen en basis op orde krijgen</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">1.1</td><td>Schrijf meta descriptions voor alle pagina's</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.2</td><td>Verwijder <code>user-scalable=no</code> uit viewport</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.3</td><td>Voeg srcset toe aan afbeeldingen of gebruik WebP</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.4</td><td>Maak een "Over ons" pagina met bedrijfsverhaal</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.5</td><td>Optimaliseer afbeeldingen (lazy loading)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.6</td><td>Zet een cookiebanner (Complianz / Cookiebot)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.7</td><td>Voeg gestructureerde data toe (Schema.org LocalBusiness)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card" id="fase-2-conversie-design">
+        <div class="phase-num" aria-hidden="true">2</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#F15D12] font-semibold mb-1">Fase 2 · Week 3-6</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">Conversie & Design</h3>
+        <div class="text-sm text-gray-500 mb-5">Doel: de website laten voelen als het bedrijf dat hij is</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">2.1</td><td><strong>Nieuw design</strong> - industriële look & feel met RVS-esthetiek</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.2</td><td>Producten centraal met professionele foto's en specificaties</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.3</td><td>Video's van persen in actie op productpagina's</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.4</td><td>"Offerte aanvragen" per product (directe leadgeneratie)</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.5</td><td>"Over ons" uitbreiden met werkplaats, Niels zijn verhaal</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.6</td><td>Mobiele ervaring verbeteren (click-to-call, sticky CTA)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.7</td><td>Sidebar met omsnoeringsband herplaatsen of verwijderen</td><td><span class="badge badge-laag">Laag</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card" id="fase-3-groei-content">
+        <div class="phase-num" aria-hidden="true">3</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#F15D12] font-semibold mb-1">Fase 3 · Maand 2-4</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">Groei & Content</h3>
+        <div class="text-sm text-gray-500 mb-5">Doel: online zichtbaarheid uitbouwen en vertrouwen winnen</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">3.1</td><td>Start een blog/kennisbank over afvalvermindering</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.2</td><td>Publiceer cases (wie gebruikt persen, wat besparen ze)</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.3</td><td>Optimaliseer voor B2B-zoekwoorden</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.4</td><td>Bouw een eenvoudige offerteflow in het formulier</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.5</td><td>Overweeg meertaligheid (Engels/Duits voor export)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr>
+
+      <!-- Section 7 -->
+      <h2 id="7-conclusie"><span class="sec-num">07</span> Conclusie</h2>
+
+      <p>Velthof Milieutechniek heeft een solide basis: goede producten, een duidelijke niche (RVS, Made in Holland) en een markt die groeit (duurzaamheid, recycling, afvalreductie). De website is op dit moment een afspiegeling van een bedrijf dat te druk was met produceren om online professioneel over te komen.</p>
+
+      <p>De prioriteiten zijn:</p>
+      <ol>
+        <li><strong>Technische basis herstellen</strong> - meta descriptions, user-scalable, "Over ons" pagina</li>
+        <li><strong>Producten laten zien</strong> - goede foto's, specificaties, video's</li>
+        <li><strong>Het verhaal vertellen</strong> - wie is Niels, waarom RVS, waarom Made in Holland</li>
+        <li><strong>Conversie mogelijk maken</strong> - offerteflow per product, duidelijke CTA's</li>
+      </ol>
+
+      <p>Het doel is een website die net zo robuust en overtuigend is als de persen die hij verkoopt.</p>
+
+      <!-- CTA -->
+      <div style="background:#121212; border-radius:14px; padding:1.75rem; text-align:center; margin-bottom:0;">
+        <div class="text-[#F15D12] text-[10px] uppercase tracking-[0.2em] font-semibold mb-2">Volgende stap</div>
+        <p style="color:rgba(255,255,255,0.85); margin-bottom:1.25rem; font-size:1.05rem;">Klaar om uw website net zo sterk te maken als uw producten?<br>Studio Orange helpt bedrijven in Twente met websites die echt werken.</p>
+        <a href="https://studio-orange.nl/contact" style="display:inline-block; background:#F15D12; color:#121212; font-weight:700; font-size:0.95rem; padding:0.7rem 2rem; border-radius:10px; text-decoration:none; transition:background 0.2s;" onmouseover="this.style.background='#d4500f'" onmouseout="this.style.background='#F15D12'">Plan een vrijblijvend gesprek</a>
+        <p style="color:rgba(255,255,255,0.35); font-size:0.75rem; margin-top:1rem; margin-bottom:0;">Studio Orange · Oldenzaal · hallo@studio-orange.nl · 0541 234 200</p>
+      </div>
+
+      <hr>
+
+      <!-- Bijlagen -->
+      <h2 id="bijlage-a-productcategorieen"><span class="sec-num">A</span> Bijlage A: Huidige productcategorieën</h2>
+      <ol>
+        <li><strong>AFVAL PERSEN</strong> - VMT 1100, VMT 1300, Kliko Pers VMT 240/360</li>
+        <li><strong>RVS PERSEN</strong> - VMT 4000 (Stainless Steel Compactor), VMT 500</li>
+        <li><strong>GARBAGE COMPACTOR</strong></li>
+        <li><strong>BALENPERSEN / PAPIER-KARTON</strong></li>
+        <li><strong>OCCASIONS</strong> (tweedehands)</li>
+        <li><strong>AFBINDBAND</strong></li>
+        <li><strong>BOTTLENECKER / GLASBREKER</strong></li>
+        <li><strong>CBC BANDVERSNIPPERAAR</strong></li>
+        <li><strong>SCHREDDERS</strong></li>
+      </ol>
+
+      <h2 id="bijlage-b-technische-details"><span class="sec-num">B</span> Bijlage B: Technische specificaties</h2>
+      <ul>
+        <li>CMS: WordPress (Divi theme)</li>
+        <li>Hosting: Apache/2</li>
+        <li>SSL: Actief</li>
+        <li>SEO-plugin: Yoast v27.9</li>
+        <li>Laadtijd (server): 0.064s</li>
+        <li>Sitemap: WordPress-eigen</li>
+        <li>Scripts: 29 (Divi bloat)</li>
+        <li>Afbeeldingen: geen WebP, geen srcset</li>
+      </ul>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-gray-400">
+        <div>
+          <span class="font-medium text-gray-600" style="font-family:'Bricolage Grotesque',sans-serif; letter-spacing:-0.02em">Studio Orange</span>
+          <span class="mx-2 opacity-40">·</span>
+          Website Audit voor Velthof Milieutechniek
+        </div>
+        <div class="flex items-center gap-3">
+          <span>3 juli 2026</span>
+          <span class="opacity-40">·</span>
+          <span>Vertrouwelijk</span>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// Active TOC highlight on scroll
+const sections = document.querySelectorAll('h1[id], h2[id], h3[id], div[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      tocLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', href === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

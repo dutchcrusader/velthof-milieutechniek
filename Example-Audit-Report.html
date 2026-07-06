@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Audit — Vorselaars Beverages &amp; Food Solutions B.V.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style type="text/tailwindcss">
+@layer base {
+  body { font-family: 'Inter', sans-serif; color: #1a1a1a; background: #f7f5f2; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; }
+  h2 {
+    font-size: 1.875rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1.25rem;
+    color: #0f0f0f; border-top: 1px solid #e2dbd3; padding-top: 2rem;
+    display: flex; align-items: baseline; gap: 0.75rem;
+  }
+  h3 { font-size: 1.3rem; font-weight: 600; margin-top: 2rem; margin-bottom: 0.75rem; color: #1a1a1a; }
+  p { margin-bottom: 1rem; line-height: 1.75; color: #4a4540; }
+  a { color: #C8102E; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  ul { margin-bottom: 1rem; padding-left: 1.25rem; list-style-type: disc; }
+  ol { margin-bottom: 1rem; padding-left: 1.25rem; list-style-type: decimal; }
+  li { margin-bottom: 0.5rem; line-height: 1.65; color: #4a4540; }
+  hr { border: none; border-top: 1px solid #e2dbd3; margin: 2rem 0; }
+  code { font-family: 'DM Mono', monospace; background: #f0ece6; padding: 0.15rem 0.45rem; border-radius: 4px; font-size: 0.82em; color: #1a1a1a; }
+  table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.875rem; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  th { background: #0f0f0f; color: rgba(255,255,255,0.85); padding: 0.7rem 1rem; text-align: left; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'Inter', sans-serif; }
+  td { border-bottom: 1px solid #ede8e2; padding: 0.75rem 1rem; vertical-align: middle; color: #3a3530; background: #ffffff; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #faf8f5; }
+  strong { font-weight: 600; color: #1a1a1a; }
+}
+@layer components {
+  /* Sidebar */
+  .sidebar { background: #ffffff; border-right: 1px solid #e2dbd3; }
+  .toc-group-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #b5aca3; padding: 1.25rem 1rem 0.4rem; }
+  .toc-link { display: block; padding: 0.3rem 1rem; font-size: 0.8rem; color: #6b6560; border-left: 2px solid transparent; transition: all 0.15s; }
+  .toc-link:hover { color: #C8102E; border-left-color: #C8102E; text-decoration: none; background: #faf8f5; }
+  .toc-link.active { color: #C8102E; border-left-color: #C8102E; background: #fdf5f6; font-weight: 500; }
+  .toc-link-sub { padding-left: 1.75rem; font-size: 0.75rem; }
+
+  /* Nav */
+  .top-nav { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid #e2dbd3; }
+
+  /* Badges */
+  .badge { display: inline-flex; align-items: center; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; padding: 0.18rem 0.55rem; border-radius: 9999px; text-transform: uppercase; white-space: nowrap; }
+  .badge-kritisch { background: #fee2e2; color: #9b1c1c; }
+  .badge-matig { background: #fffbeb; color: #92400e; border: 1px solid #fde68a; }
+  .badge-laag { background: #ede9fe; color: #5b21b6; }
+  .badge-goed { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+  .badge-waarschuwing { background: #fff7ed; color: #9a3412; border: 1px solid #fdba74; }
+
+  /* KPI cards */
+  .kpi-card { background: #fff; border: 1px solid #f0ece6; border-radius: 14px; padding: 1.25rem; }
+  .kpi-card-red { background: #fff5f5; border-color: #fecaca; }
+
+  /* Phase cards */
+  .phase-card { background: #fff; border: 1px solid #e2dbd3; border-radius: 14px; padding: 1.5rem 1.75rem; margin-bottom: 2rem; }
+  .phase-num { font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; font-weight: 700; line-height: 1; color: rgba(200,16,46,0.08); float: right; margin-top: -0.5rem; }
+
+  /* Alert box */
+  .alert-red { background: #fff5f5; border-left: 3px solid #C8102E; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.25rem 0; }
+  .alert-red p { color: #7f1d1d; margin: 0; }
+
+  /* Section number decoration */
+  .sec-num { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; font-weight: 400; color: #b5aca3; flex-shrink: 0; }
+
+  /* Print */
+  @media print {
+    .top-nav, aside { display: none !important; }
+    main { margin-left: 0 !important; padding: 2rem !important; }
+    body { background: white; }
+    .cover-card { break-inside: avoid; }
+  }
+}
+</style>
+</head>
+<body class="antialiased">
+
+<!-- Top Nav -->
+<nav class="top-nav fixed top-0 left-0 right-0 z-50 px-6 py-3 flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full overflow-hidden bg-white border border-gray-200 flex-shrink-0">
+      <img src="images/logo.png" alt="Vorselaars logo" class="w-full h-full object-contain">
+    </div>
+    <div>
+      <div class="text-xs font-semibold text-gray-800" style="font-family:'Cormorant Garamond',serif; font-size:1rem; line-height:1.2">Vorselaars</div>
+      <div class="text-[9px] uppercase tracking-widest text-gray-400 leading-tight">Website Audit Rapport</div>
+    </div>
+    <div class="hidden md:block w-px h-6 bg-gray-200 mx-2"></div>
+    <div class="hidden md:block text-xs text-gray-400">Studio Orange · 2 juni 2026</div>
+  </div>
+  <div class="flex items-center gap-5 text-xs text-gray-500">
+    <a href="#executive-summary" class="hidden md:block hover:text-[#C8102E] transition-colors">Samenvatting</a>
+    <a href="#2-technische-audit" class="hidden md:block hover:text-[#C8102E] transition-colors">Techniek</a>
+    <a href="#6-strategische-aanbevelingen" class="hidden md:block hover:text-[#C8102E] transition-colors">Strategie</a>
+    <button onclick="window.print()" class="bg-[#C8102E] text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-[#A00D24] transition-colors">Exporteer PDF</button>
+  </div>
+</nav>
+
+<div class="flex pt-14">
+
+  <!-- Sidebar -->
+  <aside class="sidebar hidden lg:block w-64 fixed left-0 top-14 bottom-0 overflow-y-auto">
+
+    <!-- Client card -->
+    <div class="px-4 py-5 border-b border-gray-100">
+      <div class="flex items-center gap-2.5 mb-3">
+        <div class="w-9 h-9 rounded-full overflow-hidden bg-white border border-gray-200 flex-shrink-0">
+          <img src="images/logo.png" alt="Vorselaars logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <div class="text-sm font-semibold text-gray-800 leading-tight" style="font-family:'Cormorant Garamond',serif">Vorselaars</div>
+          <div class="text-[10px] text-gray-400">Beverages &amp; Food Solutions B.V.</div>
+        </div>
+      </div>
+      <div class="text-[10px] text-gray-400 space-y-0.5">
+        <div>KvK 1853263 · Tilburg</div>
+        <div>Opgericht 1940</div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <nav aria-label="Inhoudsopgave">
+      <div class="toc-group-label">Inleiding</div>
+      <a href="#executive-summary" class="toc-link">Executive Summary</a>
+      <a href="#1-bedrijfsprofiel-propositie" class="toc-link">1. Bedrijfsprofiel</a>
+
+      <div class="toc-group-label">Audit</div>
+      <a href="#2-technische-audit" class="toc-link">2. Technische Audit</a>
+      <a href="#21-platform-infrastructuur" class="toc-link toc-link-sub">Platform &amp; Infrastructuur</a>
+      <a href="#22-seo-technisch" class="toc-link toc-link-sub">SEO-Technisch</a>
+      <a href="#23-performance" class="toc-link toc-link-sub">Performance</a>
+      <a href="#24-beveiliging-privacy" class="toc-link toc-link-sub">Beveiliging &amp; Privacy</a>
+      <a href="#25-mobiele-ervaring" class="toc-link toc-link-sub">Mobiele Ervaring</a>
+      <a href="#3-ux-design-analyse" class="toc-link">3. UX &amp; Design</a>
+      <a href="#4-content-seo-analyse" class="toc-link">4. Content &amp; SEO</a>
+      <a href="#5-concurrentie-analyse-kort" class="toc-link">5. Concurrentie</a>
+
+      <div class="toc-group-label">Aanbevelingen</div>
+      <a href="#6-strategische-aanbevelingen" class="toc-link">6. Strategie</a>
+      <a href="#fase-1-quick-wins" class="toc-link toc-link-sub">Fase 1: Quick Wins</a>
+      <a href="#fase-2-b2b-conversiepad" class="toc-link toc-link-sub">Fase 2: B2B-Conversiepad</a>
+      <a href="#fase-3-groei-schaal" class="toc-link toc-link-sub">Fase 3: Groei &amp; Schaal</a>
+      <a href="#7-investeringsraming" class="toc-link">7. Investeringsraming</a>
+      <a href="#8-conclusie" class="toc-link">8. Conclusie</a>
+
+      <div class="toc-group-label">Bijlagen</div>
+      <a href="#bijlage-a-screenshots" class="toc-link">Bijlage A: Screenshots</a>
+      <a href="#bijlage-b-gedownloade-assets" class="toc-link">Bijlage B: Assets</a>
+      <a href="#bijlage-c-technische-details" class="toc-link">Bijlage C: Techniek</a>
+    </nav>
+
+    <!-- Studio Orange branding -->
+    <div class="px-4 py-5 mt-auto border-t border-gray-100">
+      <div class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Opgesteld door</div>
+      <div class="text-sm font-semibold text-gray-700" style="font-family:'Cormorant Garamond',serif">Studio Orange</div>
+      <div class="text-[10px] text-gray-400">2 juni 2026 · Vertrouwelijk</div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="flex-1 lg:ml-64 min-w-0">
+    <div class="max-w-3xl mx-auto px-6 md:px-10 py-10">
+
+      <!-- Cover card -->
+      <div class="cover-card relative rounded-2xl overflow-hidden mb-10" style="background:#C8102E">
+        <div class="absolute inset-0 opacity-[0.04]" style="background-image: radial-gradient(circle, white 1.5px, transparent 1.5px); background-size: 20px 20px;"></div>
+        <div class="relative p-10 md:p-14">
+          <div class="flex items-start justify-between mb-10">
+            <div class="w-14 h-14 rounded-full overflow-hidden bg-white flex-shrink-0 shadow-md">
+              <img src="images/logo.png" alt="Vorselaars logo" class="w-full h-full object-contain">
+            </div>
+            <div class="text-right">
+              <div class="text-white/90 text-sm font-semibold" style="font-family:'Cormorant Garamond',serif; font-size:1.1rem">Studio Orange</div>
+              <div class="text-white/50 text-xs mt-0.5">2 juni 2026</div>
+              <div class="text-white/40 text-[10px] uppercase tracking-widest mt-1">Vertrouwelijk</div>
+            </div>
+          </div>
+          <div class="text-white/40 text-[11px] uppercase tracking-[0.2em] mb-4">Website Audit &amp; Strategisch Plan</div>
+          <h1 class="text-white font-bold leading-[1.05] mb-6" style="font-family:'Cormorant Garamond',serif; font-size:clamp(2.25rem,5vw,3.75rem); color:white; margin:0 0 1.5rem 0; border:none; padding:0">
+            Vorselaars<br>Beverages &amp;<br>Food Solutions B.V.
+          </h1>
+          <div class="flex flex-wrap items-center gap-3 text-white/50 text-xs">
+            <span>www.vorselaars.nl</span>
+            <span class="opacity-40">·</span>
+            <span>Tilburg</span>
+            <span class="opacity-40">·</span>
+            <span>Opgericht 1940</span>
+            <span class="opacity-40">·</span>
+            <span>KvK 1853263</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI summary -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+        <div class="kpi-card kpi-card-red">
+          <div class="text-3xl font-bold text-[#C8102E] mb-1" style="font-family:'Cormorant Garamond',serif">0/5</div>
+          <div class="text-[10px] font-semibold text-red-800 uppercase tracking-wider">Meta descriptions</div>
+          <div class="text-[11px] text-red-400 mt-0.5">Alle pagina's ontbreken</div>
+        </div>
+        <div class="kpi-card kpi-card-red">
+          <div class="text-3xl font-bold text-[#C8102E] mb-1" style="font-family:'Cormorant Garamond',serif">0</div>
+          <div class="text-[10px] font-semibold text-red-800 uppercase tracking-wider">H1 op homepage</div>
+          <div class="text-[11px] text-red-400 mt-0.5">Semantisch gebroken</div>
+        </div>
+        <div class="kpi-card kpi-card-red">
+          <div class="text-3xl font-bold text-[#C8102E] mb-1" style="font-family:'Cormorant Garamond',serif">0</div>
+          <div class="text-[10px] font-semibold text-red-800 uppercase tracking-wider">Schema.org markup</div>
+          <div class="text-[11px] text-red-400 mt-0.5">Volledig afwezig</div>
+        </div>
+        <div class="kpi-card kpi-card-red">
+          <div class="text-3xl font-bold text-[#C8102E] mb-1" style="font-family:'Cormorant Garamond',serif">0</div>
+          <div class="text-[10px] font-semibold text-red-800 uppercase tracking-wider">Contactformulier</div>
+          <div class="text-[11px] text-red-400 mt-0.5">Geen leadgeneratie</div>
+        </div>
+      </div>
+
+      <!-- Metadata -->
+      <div class="bg-white rounded-xl border border-gray-100 divide-y divide-gray-100 mb-4 text-sm">
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Datum</span><span class="text-gray-700">2 juni 2026</span></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Auditor</span><span class="text-gray-700">Studio Orange</span></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Website</span><a href="https://www.vorselaars.nl" class="text-[#C8102E]">www.vorselaars.nl</a></div>
+        <div class="flex gap-4 px-5 py-3"><span class="w-24 text-gray-400 flex-shrink-0">Bedrijf</span><span class="text-gray-700">Vorselaars Beverages &amp; Food Solutions B.V., Tilburg</span></div>
+      </div>
+
+      <hr>
+
+      <!-- Executive Summary -->
+      <h2 id="executive-summary"><span class="sec-num">00</span> Executive Summary</h2>
+
+      <p>Vorselaars is een gevestigd familiebedrijf, opgericht in 1940, met sterke credentials: FSSC22000-gecertificeerd, SKAL-bio gecertificeerd, producent van eigen merken Corvo en Gruno, en een private-labelpartner voor grote afnemers. De website communiceert deze waarde niet. Het is een degelijke WordPress-site met het Salient-theme, maar B2B-conversie-elementen ontbreken, SEO-lekken zijn kritisch, en het sterke productassortiment komt visueel niet tot zijn recht.</p>
+
+      <p><strong>Kernproblemen:</strong></p>
+      <ol>
+        <li>Geen enkele pagina heeft een meta description: niet zichtbaar in Google</li>
+        <li>Geen Schema.org-structuur: zoekmachines begrijpen de B2B-proposities niet</li>
+        <li>Homepage heeft geen H1: de semantische structuur is gebroken</li>
+        <li>Geen contactformulier: potentiële B2B-klanten bellen of mailen zelf</li>
+        <li>Geen leadgeneratie-flow voor private label of loonbotteling</li>
+        <li>Geen meertaligheid ondanks een internationale klantenkring</li>
+        <li>Productafbeeldingen zijn niet geoptimaliseerd voor conversie</li>
+        <li>De site is traag door 9 gecombineerde JS-bestanden en zware caching-plugins</li>
+      </ol>
+
+      <p><strong>Kansen:</strong></p>
+      <ul>
+        <li>85+ jaar ervaring, ISO-gecertificeerd, biologisch, private label: dat is een sterk verhaal</li>
+        <li>Heldere productcategorieën met mooie producten</li>
+        <li>Bestaande merken Corvo en Gruno die verder uitgebouwd kunnen worden</li>
+        <li>Downloadbare certificaten die vertrouwen opbouwen bij B2B-inkopers</li>
+      </ul>
+
+      <p><strong>Aanbevolen aanpak:</strong> Fase 1 (quick wins: SEO, formulieren, snelheid) &rarr; Fase 2 (herstructurering B2B-conversiepad) &rarr; Fase 3 (meertaligheid en contentmarketing).</p>
+
+      <hr>
+
+      <!-- Section 1 -->
+      <h2 id="1-bedrijfsprofiel-propositie"><span class="sec-num">01</span> Bedrijfsprofiel &amp; Propositie</h2>
+
+      <h3 id="over-vorselaars">Over Vorselaars</h3>
+      <ul>
+        <li><strong>Naam:</strong> Vorselaars Beverages &amp; Food Solutions B.V.</li>
+        <li><strong>Locatie:</strong> Ledeboerstraat 72, 5048 AD Tilburg (Industriegebied Kraaiven)</li>
+        <li><strong>KvK:</strong> 1853263</li>
+        <li><strong>Oprichting:</strong> 1940</li>
+        <li><strong>Specialisatie:</strong> Produceren en bottelen van vruchtensappen, siropen, ijsdressings en slushsiropen</li>
+        <li><strong>Eigen merken:</strong> Corvo (vruchtensappen), Gruno (ijsdressings)</li>
+        <li><strong>Diensten:</strong> Private label, loonbotteling</li>
+        <li><strong>Certificeringen:</strong> FSSC22000, SKAL Bio</li>
+        <li><strong>Contact:</strong> +31 (0)13 583 92 92, info@vorselaars.nl</li>
+      </ul>
+
+      <h3 id="website-structuur-15-paginas">Website-structuur (15 pagina's)</h3>
+      <ol>
+        <li>Home</li>
+        <li>Over ons</li>
+        <li>Producten (hoofd)</li>
+        <li>Downloads</li>
+        <li>Contact</li>
+        <li>Producten / Nieuwe producten</li>
+        <li>Producten / Vruchtensappen</li>
+        <li>Producten / Limonadesiropen</li>
+        <li>Producten / Slushsiropen</li>
+        <li>Producten / Private label</li>
+        <li>Producten / IJsdressings</li>
+        <li>Producten / IJsdressings / Vruchtensorbet en dessertsauzen</li>
+        <li>Producten / IJsdressings / Shake syrup</li>
+        <li>Producten / IJsdressings / Milkshakesiroop</li>
+        <li>Producten / IJsdressings / Diverse producten</li>
+      </ol>
+
+      <hr>
+
+      <!-- Section 2 -->
+      <h2 id="2-technische-audit"><span class="sec-num">02</span> Technische Audit</h2>
+
+      <h3 id="21-platform-infrastructuur">2.1 Platform &amp; Infrastructuur</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>CMS</td><td>WordPress (laatste versie)</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Theme</td><td>Salient</td><td><span class="badge badge-waarschuwing">Premium, zwaar</span></td></tr>
+          <tr><td>Page builder</td><td>WPBakery / JS Composer</td><td><span class="badge badge-waarschuwing">Legacy, traag</span></td></tr>
+          <tr><td>Caching</td><td>Minify/cache-plugins actief</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>HTTPS</td><td>Actief, geldig certificaat</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Hosting</td><td>Shared (afgeleid uit setup)</td><td><span class="badge badge-waarschuwing">Onbekend</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="22-seo-technisch">2.2 SEO-Technisch</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td>Meta descriptions</td><td><strong>Ontbreken op alle 5 hoofdpagina's</strong></td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+          <tr><td>Meta keywords</td><td>Niet aanwezig</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          <tr><td>H1-tags</td><td><strong>Ontbreken op homepage</strong> (begint met H2)</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+          <tr><td>H2-tags</td><td>Aanwezig, maar inconsistent</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          <tr><td>Canonical URLs</td><td>Aanwezig op alle pagina's</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Open Graph tags</td><td>Aanwezig</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Twitter Cards</td><td>Ontbreken</td><td><span class="badge badge-laag">Laag</span></td></tr>
+          <tr><td>Schema.org / Structured data</td><td><strong>Volledig afwezig</strong></td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+          <tr><td>Robots.txt</td><td>Correct geconfigureerd</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Sitemap.xml</td><td>WordPress-eigen sitemap, 15 URL's</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Alt-attributen</td><td>Aanwezig bij alle afbeeldingen</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Language tag</td><td><code>lang="nl"</code> correct ingesteld</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>URL-structuur</td><td>Schoon, leesbaar</td><td><span class="badge badge-goed">Goed</span></td></tr>
+          <tr><td>Interne links</td><td>Logische structuur</td><td><span class="badge badge-goed">Goed</span></td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="23-performance">2.3 Performance</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>CSS-bestanden</td><td>6 externe bestanden, waaronder een verouderde IE8-stylesheet</td></tr>
+          <tr><td>JS-bestanden</td><td>9 externe gecombineerde bestanden</td></tr>
+          <tr><td>Afbeeldingen</td><td>PNG's van 500-800 KB (niet gecomprimeerd, geen WebP)</td></tr>
+          <tr><td>Caching</td><td>Minify actief, maar geen deferred JS</td></tr>
+          <tr><td>Core Web Vitals</td><td>Waarschijnlijk matig door zware afbeeldingen en render-blocking JS</td></tr>
+        </tbody>
+      </table>
+
+      <div class="alert-red">
+        <p>De combinatie van Salient, WPBakery en minify-plugins produceert een zware frontend. Zonder lazy loading en moderne formaten (WebP/AVIF) is mobiele performance structureel onder de maat.</p>
+      </div>
+
+      <h3 id="24-beveiliging-privacy">2.4 Beveiliging &amp; Privacy</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>SSL/HTTPS</td><td><span class="badge badge-goed">Actief</span></td></tr>
+          <tr><td>Cookiebanner</td><td><strong>Niet aanwezig</strong>; GDPR-naleving is onduidelijk</td></tr>
+          <tr><td>Privacyverklaring</td><td><strong>Niet zichtbaar op website</strong></td></tr>
+          <tr><td>Contactformulier</td><td><strong>Afwezig</strong>: geen leadgeneratie mogelijk</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="25-mobiele-ervaring">2.5 Mobiele Ervaring</h3>
+      <table>
+        <thead><tr><th>Aspect</th><th>Bevinding</th></tr></thead>
+        <tbody>
+          <tr><td>Viewport</td><td><span class="badge badge-goed">Correct ingesteld</span></td></tr>
+          <tr><td>Responsive design</td><td><span class="badge badge-goed">Salient is responsive</span></td></tr>
+          <tr><td>Touch-targets</td><td>Navigatie is bruikbaar, maar knoppen zijn klein</td></tr>
+          <tr><td>Mobiele CTA</td><td>Geen sticky contactknop of click-to-call highlight</td></tr>
+        </tbody>
+      </table>
+
+      <hr>
+
+      <!-- Section 3 -->
+      <h2 id="3-ux-design-analyse"><span class="sec-num">03</span> UX &amp; Design Analyse</h2>
+
+      <h3 id="31-visueel-ontwerp">3.1 Visueel Ontwerp</h3>
+      <p><strong>Kleurenpalet:</strong></p>
+      <ul>
+        <li>Primair: Rood (#e30613), herkenbaar voor voedsel en dranken</li>
+        <li>Secundair: Zwart en wit voor contrast</li>
+        <li>Achtergrond: Wit met rode accenten</li>
+      </ul>
+      <p>Het ontwerp is functioneel maar gedateerd. Het Salient-theme geeft een "template-gevoel" dat niet onderscheidend is voor een B2B-fabrikant. De rode kleur is sterk, maar wordt niet consistent doorgevoerd in de productpresentatie.</p>
+
+      <h3 id="32-homepage-analyse">3.2 Homepage-analyse</h3>
+      <p><strong>Opbouw:</strong></p>
+      <ol>
+        <li>Header met logo en navigatie</li>
+        <li>Hero-slider (wisselende banners: Vruchtensappen / Limonadesiropen)</li>
+        <li>3-koloms sectie: Over Vorselaars, Merk Corvo, Merk Gruno</li>
+        <li>Footer met copyright</li>
+      </ol>
+      <p><strong>Problemen:</strong></p>
+      <ul>
+        <li>Geen H1: de pagina begint met H2 "Vruchtensappen" (SEO-fout)</li>
+        <li>Geen waardepropositie bovenaan: de bezoeker ziet niet direct of Vorselaars B2B of B2C is</li>
+        <li>Hero-slider is passief: geen CTA naar offerte of sample-aanvraag</li>
+        <li>Merkblokken zijn informatief, niet conversiegericht: "Lees meer" leidt naar productpagina's zonder pad naar contact</li>
+      </ul>
+
+      <h3 id="33-navigatie">3.3 Navigatie</h3>
+      <table>
+        <thead><tr><th>Menu-item</th><th>Doel</th><th>Probleem</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td>Introductie</td><td>Geen duidelijke B2B-propositie</td></tr>
+          <tr><td>Over ons</td><td>Bedrijfsverhaal</td><td>Geen uitklapbare geschiedenis, statisch</td></tr>
+          <tr><td>Producten</td><td>Assortiment</td><td>Goed gestructureerd, maar geen quick-quote optie</td></tr>
+          <tr><td>Downloads</td><td>Certificaten</td><td>Goed voor B2B-trust, maar verborgen in menu</td></tr>
+          <tr><td>Contact</td><td>Contactgegevens</td><td>Geen formulier, geen kaart, alleen tekst</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="34-productpaginas">3.4 Productpagina's</h3>
+      <p><strong>Sterke punten:</strong></p>
+      <ul>
+        <li>Duidelijke categorie-indeling</li>
+        <li>Productafbeeldingen zijn aanwezig</li>
+        <li>"Nieuwe producten"-sectie toont innovatie</li>
+      </ul>
+      <p><strong>Zwakke punten:</strong></p>
+      <ul>
+        <li>Geen technische specificaties per product (pH, Brix, verpakkingseenheden, MOQ)</li>
+        <li>Geen "Vraag een sample aan"-knop</li>
+        <li>Geen "Offerte aanvragen"-flow</li>
+        <li>Productafbeeldingen zijn klein en niet uitklapbaar</li>
+        <li>Geen productfilters of zoekfunctie</li>
+      </ul>
+
+      <h3 id="35-contactpagina">3.5 Contactpagina</h3>
+      <p>De pagina toont openingstijden, telefoonnummer, e-mailadressen (info, inkoop, verkoop) en een adres. Dat is het.</p>
+      <p><strong>Kritieke missers:</strong></p>
+      <ul>
+        <li>Geen contactformulier: de bezoeker moet zelf een e-mailclient openen</li>
+        <li>Geen kaart: geen Google Maps-integratie</li>
+        <li>Geen routebeschrijving: Industriegebied Kraaiven is lastig te vinden</li>
+        <li>Geen afdelingsselectie: een formulier dat direct naar inkoop of verkoop routeert, ontbreekt</li>
+        <li>Geen FAQ: veelgestelde vragen ontbreken</li>
+      </ul>
+
+      <hr>
+
+      <!-- Section 4 -->
+      <h2 id="4-content-seo-analyse"><span class="sec-num">04</span> Content &amp; SEO Analyse</h2>
+
+      <h3 id="41-content-kwaliteit">4.1 Content-kwaliteit</h3>
+      <table>
+        <thead><tr><th>Pagina</th><th>Woordenaantal</th><th>Kwaliteit</th></tr></thead>
+        <tbody>
+          <tr><td>Home</td><td>~150</td><td>Matig, generiek</td></tr>
+          <tr><td>Over ons</td><td>~100</td><td>Kort, feitelijk</td></tr>
+          <tr><td>Producten</td><td>~200</td><td>Functioneel</td></tr>
+          <tr><td>Downloads</td><td>~20</td><td>Minimaal</td></tr>
+          <tr><td>Contact</td><td>~50</td><td>Puur informatief</td></tr>
+        </tbody>
+      </table>
+      <p>De content is te kort en te functioneel voor B2B-SEO. Er is geen diepgang over het productieproces, kwaliteitsborging, de voordelen van private label bij Vorselaars, of de 85-jarige geschiedenis die het bedrijf onderscheidt van concurrenten.</p>
+
+      <h3 id="42-zoekwoordstrategie">4.2 Zoekwoordstrategie</h3>
+      <p>Er is geen zichtbare strategie. Pagina's zijn niet geoptimaliseerd voor B2B-zoektermen zoals:</p>
+      <ul>
+        <li>"private label vruchtensappen"</li>
+        <li>"loonbotteling siroop"</li>
+        <li>"FSSC22000 gecertificeerd sap"</li>
+        <li>"bio vruchtensappen groothandel"</li>
+        <li>"milkshake siroop horeca"</li>
+      </ul>
+
+      <h3 id="43-concurrerende-contentgaten">4.3 Concurrerende contentgaten</h3>
+      <ul>
+        <li>Geen blog of kennisbank</li>
+        <li>Geen nieuwssectie (productlanceringen, beurzen)</li>
+        <li>Geen video's (productieproces, fabriekstour)</li>
+        <li>Geen downloadbare catalogus: alleen certificaten en voorwaarden</li>
+      </ul>
+
+      <hr>
+
+      <!-- Section 5 -->
+      <h2 id="5-concurrentie-analyse-kort"><span class="sec-num">05</span> Concurrentie-analyse</h2>
+
+      <p>Vorselaars opereert in een markt met grote internationale spelers (Riedel, FrieslandCampina) en regionale concurrenten. De meeste B2B-concurrenten hebben:</p>
+      <ul>
+        <li>Een professioneel contactformulier met offerteflow</li>
+        <li>Technische productspecificaties online</li>
+        <li>Meertalige sites (NL/EN/DE)</li>
+        <li>Video's en fabrieksimpressies</li>
+        <li>Schema.org markup voor rich snippets in Google</li>
+      </ul>
+      <p>Vorselaars loopt hier achter, terwijl het bedrijf qua credentials en productkwaliteit zeker mee kan.</p>
+
+      <hr>
+
+      <!-- Section 6 -->
+      <h2 id="6-strategische-aanbevelingen"><span class="sec-num">06</span> Strategische Aanbevelingen</h2>
+
+      <!-- Phase 1 -->
+      <div class="phase-card" id="fase-1-quick-wins">
+        <div class="phase-num" aria-hidden="true">1</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#C8102E] font-semibold mb-1">Fase 1 · Maand 1</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">Quick Wins</h3>
+        <div class="text-sm text-gray-500 mb-5">Geschatte investering: €2.500 – €4.000 &nbsp;·&nbsp; Doel: onmiddellijke zichtbaarheid en conversieverbetering</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">1.1</td><td>Schrijf unieke meta descriptions voor alle 15 pagina's</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.2</td><td>Voeg H1 toe aan homepage (bijv. "Sappen en siropen van eigen bodem, sinds 1940")</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.3</td><td>Implementeer Schema.org LocalBusiness en Product markup</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.4</td><td>Voeg een contactformulier toe (Gravity Forms / WPForms) met afdelingsselectie</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.5</td><td>Plaats een cookiebanner (Cookiebot / Complianz)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.6</td><td>Optimaliseer afbeeldingen (WebP, lazy loading, compressie)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.7</td><td>Verwijder de verouderde IE8-stylesheet</td><td><span class="badge badge-laag">Laag</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">1.8</td><td>Voeg Google Maps-embed toe aan Contact</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card" id="fase-2-b2b-conversiepad">
+        <div class="phase-num" aria-hidden="true">2</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#C8102E] font-semibold mb-1">Fase 2 · Maand 2-3</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">B2B-Conversiepad</h3>
+        <div class="text-sm text-gray-500 mb-5">Geschatte investering: €5.000 – €8.000 &nbsp;·&nbsp; Doel: bezoekers omzetten in leads</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">2.1</td><td>Herbouw homepage met duidelijke B2B-propositie bovenaan</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.2</td><td>Creëer "Offerte aanvragen"-flow op productpagina's</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.3</td><td>Voeg een "Sample aanvragen"-knop toe per product</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.4</td><td>Voeg technische specificaties toe per product (PDF-download)</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.5</td><td>Schrijf uitgebreide "Over ons" met geschiedenis, team en fabriek</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.6</td><td>Voeg klantenpagina of case studies toe</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">2.7</td><td>Implementeer newsletter signup voor productnieuws</td><td><span class="badge badge-laag">Laag</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card" id="fase-3-groei-schaal">
+        <div class="phase-num" aria-hidden="true">3</div>
+        <div class="text-[10px] uppercase tracking-widest text-[#C8102E] font-semibold mb-1">Fase 3 · Maand 3-6</div>
+        <h3 style="margin-top:0.25rem; margin-bottom:0.25rem">Groei &amp; Schaal</h3>
+        <div class="text-sm text-gray-500 mb-5">Geschatte investering: €8.000 – €15.000 &nbsp;·&nbsp; Doel: marktpositie versterken en internationale groei ondersteunen</div>
+        <table>
+          <thead><tr><th>#</th><th>Actie</th><th>Impact</th></tr></thead>
+          <tbody>
+            <tr><td class="text-gray-400 font-mono text-xs">3.1</td><td>Meertalige site (Engels, Duits) met WPML of Polylang</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.2</td><td>Blog en kennisbank voor SEO en thought leadership</td><td><span class="badge badge-matig">Matig</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.3</td><td>Professionele productfotografie en video's (fabriek, proces)</td><td><span class="badge badge-kritisch">Kritisch</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.4</td><td>Klantenportaal met orderstatus en downloads</td><td><span class="badge badge-laag">Laag</span></td></tr>
+            <tr><td class="text-gray-400 font-mono text-xs">3.5</td><td>Integratie met CRM (bijv. HubSpot) voor lead tracking</td><td><span class="badge badge-matig">Matig</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <hr>
+
+      <!-- Section 7 -->
+      <h2 id="7-investeringsraming"><span class="sec-num">07</span> Investeringsraming</h2>
+
+      <table>
+        <thead><tr><th>Fase</th><th>Omschrijving</th><th>Geschatte kosten</th></tr></thead>
+        <tbody>
+          <tr><td>Fase 1</td><td>Quick wins (SEO, formulieren, techniek)</td><td>€ 2.500 – € 4.000</td></tr>
+          <tr><td>Fase 2</td><td>Conversiepad &amp; content</td><td>€ 5.000 – € 8.000</td></tr>
+          <tr><td>Fase 3</td><td>Groei, meertaligheid, media</td><td>€ 8.000 – € 15.000</td></tr>
+          <tr>
+            <td colspan="2" class="font-bold" style="background:#C8102E; color:white; font-size:0.875rem">Totaal</td>
+            <td class="font-bold" style="background:#C8102E; color:white; font-size:0.875rem">€ 15.500 – € 27.000</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Aanbevolen start: Fase 1 direct uitvoeren. Dit levert de hoogste ROI per geïnvesteerde euro.</p>
+
+      <hr>
+
+      <!-- Section 8 -->
+      <h2 id="8-conclusie"><span class="sec-num">08</span> Conclusie</h2>
+
+      <p>Vorselaars heeft een solide basis: een betrouwbaar familiebedrijf met sterke certificeringen, een mooi productassortiment en een loyale klantenkring. De website is echter een gemiste kans. Nu fungeert het als een digitaal visitekaartje. Het kan een B2B-verkooptool zijn.</p>
+
+      <p>De vier prioriteiten om daar te komen:</p>
+      <ol>
+        <li><strong>Zichtbaarheid herstellen</strong> door meta descriptions, H1-tags en Schema.org te implementeren</li>
+        <li><strong>Conversie mogelijk maken</strong> door een professioneel contactformulier en offerteflow toe te voegen</li>
+        <li><strong>Het verhaal vertellen</strong> door de "Over ons"-pagina uit te breiden en de 85-jarige geschiedenis te benutten</li>
+        <li><strong>Producten professioneel presenteren</strong> met technische specs, grote foto's en een sample-aanvraagflow</li>
+      </ol>
+
+      <p>Met Fase 1 (€2.500 – €4.000) kan Vorselaars binnen vier tot zes weken meetbaar meer organisch verkeer en contactaanvragen genereren.</p>
+
+      <hr>
+
+      <!-- Bijlagen -->
+      <h2 id="bijlage-a-screenshots"><span class="sec-num">A</span> Bijlage A: Screenshots</h2>
+      <ul>
+        <li><code>screenshot-home.png</code>: Homepage</li>
+        <li><code>screenshot-over-ons.png</code>: Over ons</li>
+        <li><code>screenshot-producten.png</code>: Producten</li>
+        <li><code>screenshot-downloads.png</code>: Downloads</li>
+        <li><code>screenshot-contact.png</code>: Contact</li>
+      </ul>
+
+      <h2 id="bijlage-b-gedownloade-assets"><span class="sec-num">B</span> Bijlage B: Gedownloade Assets</h2>
+      <ul>
+        <li>32 productafbeeldingen en sliders opgeslagen in <code>/images/</code></li>
+        <li>Volledige HTML van alle 5 hoofdpagina's opgeslagen</li>
+      </ul>
+
+      <h2 id="bijlage-c-technische-details"><span class="sec-num">C</span> Bijlage C: Technische Details</h2>
+      <ul>
+        <li>CMS: WordPress (Salient theme + WPBakery)</li>
+        <li>Sitemap: 15 pagina's geïndexeerd</li>
+        <li>SSL: Actief</li>
+        <li>Performance: Matig (optimalisatie benodigd)</li>
+      </ul>
+
+      <!-- Footer -->
+      <footer class="mt-16 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-gray-400">
+        <div>
+          <span class="font-medium text-gray-600" style="font-family:'Cormorant Garamond',serif">Studio Orange</span>
+          <span class="mx-2 opacity-40">·</span>
+          Website Audit voor Vorselaars Beverages &amp; Food Solutions B.V.
+        </div>
+        <div class="flex items-center gap-3">
+          <span>2 juni 2026</span>
+          <span class="opacity-40">·</span>
+          <span>Vertrouwelijk</span>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+</div>
+
+<script>
+// Active TOC highlight on scroll
+const sections = document.querySelectorAll('h1[id], h2[id], h3[id], div[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      tocLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', href === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

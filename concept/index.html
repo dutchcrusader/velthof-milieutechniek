@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velthof Milieutechniek — RVS Afvalpersen, Made in Holland</title>
+  <meta name="description"
+    content="Velthof Milieutechniek ontwerpt en bouwt RVS afvalpersen in Oldenzaal. Direct af fabriek, scherpe prijzen, Nederlands vakmanschap.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Archivo:wdth,wght@125,900&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'velthof-groen': '#3e8e2c',
+            'velthof-groen-donker': '#2c6d1f',
+            'staal': '#1a1d20',
+            'staal-licht': '#2a2e33',
+            'staal-grauw': '#5a5d62',
+            'warme-wit': '#fbfaf8',
+          },
+          fontFamily: {
+            'display': ['"Archivo"', 'system-ui', 'sans-serif'],
+            'sans': ['"Public Sans"', 'system-ui', 'sans-serif'],
+            'mono': ['"Spline Sans Mono"', 'ui-monospace', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Mobile menu overlay -->
+  <div id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <button class="close-btn" aria-label="Menu sluiten" onclick="toggleMenu()">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <a href="#producten" onclick="toggleMenu()">Producten</a>
+    <a href="#over-ons" onclick="toggleMenu()">Over ons</a>
+    <a href="tel:+31630627623" onclick="toggleMenu()">06 3062 7623</a>
+    <a href="#offerte" onclick="toggleMenu()">Offerte aanvragen</a>
+  </div>
+
+  <!-- Topbar -->
+  <header class="topbar fixed top-0 left-0 right-0 z-50 bg-transparent">
+    <div class="wrap flex items-center justify-between py-4">
+      <a href="#" class="flex items-center gap-3 group" aria-label="Velthof Milieutechniek homepage">
+        <img src="assets/velthof-logo.png" alt="Velthof Milieutechniek logo" width="48" height="50"
+          class="object-contain" style="max-height:50px;">
+        <div class="hidden sm:block leading-tight">
+          <div class="display logo-title text-[0.95rem]" style="font-weight:700; letter-spacing:-0.02em;">Velthof
+            Milieutechniek</div>
+          <div class="label logo-subtitle" style="font-size:0.6rem; opacity: 0.8;">RVS Afvalpersen · Oldenzaal</div>
+        </div>
+      </a>
+      <nav class="hidden md:flex items-center gap-7" aria-label="Hoofdnavigatie">
+        <a href="#producten" class="nav-link text-sm font-medium"
+          style="font-family:'Archivo',sans-serif; font-weight:500;">Producten</a>
+        <a href="#over-ons" class="nav-link text-sm font-medium"
+          style="font-family:'Archivo',sans-serif; font-weight:500;">Over ons</a>
+        <a href="tel:+31630627623" class="nav-link text-sm font-medium"
+          style="font-family:'Archivo',sans-serif; font-weight:500;">06 3062 7623</a>
+        <a href="#offerte" class="btn-primary btn-groen">Offerte aanvragen</a>
+      </nav>
+      <div class="flex items-center gap-3 md:hidden">
+        <a href="tel:+31630627623" class="text-warme-wit hover:text-velthof-groen transition-colors"
+          aria-label="Bellen">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+            </path>
+          </svg>
+        </a>
+        <button class="hamburger text-warme-wit" aria-label="Menu openen" aria-expanded="false"
+          aria-controls="mobileMenu" onclick="toggleMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="relative min-h-screen flex items-end overflow-hidden grain">
+    <div class="absolute inset-0 z-0">
+      <img src="assets/pexels-alexfu-2967770.jpg" alt="Geperste kartonnen balen: resultaat van een krachtige afvalpers"
+        class="w-full h-full object-cover">
+      <div class="absolute inset-0 hero-overlay"></div>
+    </div>
+
+    <div class="relative z-10 wrap pb-28 pt-32 md:pb-32 md:pt-40 w-full">
+      <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+        <div class="max-w-3xl">
+          <div class="reveal-up mb-5 md:mb-6">
+            <span class="inline-flex items-center gap-2 label text-velthof-groen"
+              style="font-size:0.72rem; flex-wrap:wrap;">
+              <span
+                style="width:0.45rem;height:0.45rem;background:#3e8e2c;border-radius:50%;display:inline-block; flex-shrink:0;"></span>
+              ONTWERP · PRODUCTIE · SERVICE, IN OLDENZAAL
+            </span>
+          </div>
+          <h1 class="hero-title display text-warme-wit reveal-up" style="margin-bottom:1.25rem;">
+            RVS Afvalpersen,<br>van eigen bodem.
+          </h1>
+          <p class="hero-sub reveal-up text-warme-wit/85 max-w-xl" style="margin-bottom:2rem; line-height:1.65;">
+            Velthof Milieutechniek ontwerpt en bouwt RVS persen voor bedrijven die hun afvalstroom serieus
+            aanpakken. Geen import, geen tussenhandel, geen standaardcatalogus. Wel een machine die precies past bij wat
+            jij over hebt.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 reveal-up">
+            <a href="#producten" class="btn-hero justify-center sm:justify-start">
+              Bekijk machines
+              <span aria-hidden="true">→</span>
+            </a>
+            <a href="#manifest" class="btn-ghost text-warme-wit/90 border-warme-wit/40 justify-center sm:justify-start"
+              style="border-bottom-color: rgba(251,250,248,0.4);">Wie is Velthof?</a>
+          </div>
+        </div>
+
+        <div class="hidden lg:block reveal-up shrink-0">
+          <img src="assets/MT-40001-nobg.png" alt="RVS afvalpers, vrijstaand model"
+            style="height: clamp(320px, 40vw, 480px); width: auto; filter: drop-shadow(0 30px 45px rgba(0,0,0,0.5)) drop-shadow(0 4px 10px rgba(0,0,0,0.3));">
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute bottom-0 left-0 right-0 z-10 border-t border-warme-wit/10 bg-staal/40 backdrop-blur-sm">
+      <div
+        class="wrap flex flex-row flex-wrap items-center justify-between py-3 gap-x-4 gap-y-1 text-warme-wit/75 label"
+        style="font-size:0.65rem;">
+        <div>MADE IN HOLLAND</div>
+        <div>RVS</div>
+        <div>DIRECT AF FABRIEK</div>
+        <div>9 CATEGORIEËN</div>
+        <div>EXPORT</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Manifest-strofe -->
+  <section id="manifest" class="py-20 md:py-36">
+    <div class="wrap-sm">
+      <div class="reveal-up mb-8 md:mb-10">
+        <span class="section-tag">MANIFEST</span>
+      </div>
+      <div class="reveal-up" style="max-width:62ch;">
+        <h2 class="display-wide text-staal"
+          style="font-size: clamp(1.45rem, 5.5vw, 2.55rem); margin-bottom:0.95rem; line-height:1.18;">
+          Afval is geen afval.<br>Het is materiaal dat wacht<br>op de juiste machine.
+        </h2>
+        <p style="font-size:1.05rem; line-height:1.75; color:#3a3d42; margin-top:1.75rem; margin-bottom:1.25rem;">
+          Wij bouwen die machine. In Oldenzaal, van RVS, met de precisie die je mag verwachten van een
+          werkplaats die al jaren hetzelfde doet: meten, snijden, lassen, testen, leveren. Geen PR-praat. Een
+          machine die het nog na 10 jaar doet.
+        </p>
+        <p style="font-size:1.05rem; line-height:1.75; color:#3a3d42; margin-bottom:1.5rem;">
+          Onze klanten zijn horeca, retail, productiebedrijven en instellingen die genoeg hebben van volle containers en
+          lege beloften. Wij leveren de pers die daar iets aan doet. Direct, betaalbaar, lokaal.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Producten -->
+  <section id="producten" class="py-16 md:py-28 bg-warme-wit">
+    <div class="wrap">
+
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-14 gap-4 reveal-up">
+        <div>
+          <span class="section-tag mb-4 inline-flex">MACHINES</span>
+          <h2 class="display-wide text-staal mt-4" style="font-size: clamp(1.85rem, 7vw, 3.5rem); margin:0;">
+            Persen voor elke afvalstroom.
+          </h2>
+        </div>
+        <p class="text-staal-grauw max-w-sm" style="font-size:0.95rem; line-height:1.6;">
+          Drie machines uit ons standaardassortiment. Alles op maat mogelijk. Vraag een proefplaatsing aan.
+        </p>
+      </div>
+
+      <div class="product-grid reveal-up">
+
+        <!-- VMT 1100 -->
+        <article class="p-kaart">
+          <div class="p-kaart-img">
+            <span class="absolute top-4 left-4 label text-velthof-groen z-10" style="font-size:0.66rem;">01</span>
+            <img src="assets/product-vmt1100.png" alt="VMT 1100 containerpers, 230 volt">
+          </div>
+          <div class="p-kaart-body">
+            <h3 class="p-kaart-title">VMT 1100 — Containerpers</h3>
+            <p class="p-kaart-desc">
+              De instapper voor horeca en kleinere retail. 230V, past door een standaarddeur. Voor wie de container niet
+              meer dan drie keer per week hoeft te legen.
+            </p>
+            <ul class="p-specs">
+              <li>Cilinderinhoud: 1100 mm</li>
+              <li>Voeding: 230V eenphase</li>
+              <li>Perskracht: 40 kN</li>
+              <li>Volume-reductie: 5:1</li>
+            </ul>
+            <a href="#offerte" class="btn-ghost mt-4">Vraag offerte aan →</a>
+          </div>
+        </article>
+
+        <!-- VMT 4000 -->
+        <article class="p-kaart">
+          <div class="p-kaart-img" style="min-height: 200px;">
+            <span class="absolute top-4 left-4 label text-velthof-groen z-10" style="font-size:0.66rem;">02</span>
+            <img src="assets/product-vmt4000.png" alt="VMT 4000 RVS Stainless Steel Compactor">
+          </div>
+          <div class="p-kaart-body">
+            <h3 class="p-kaart-title">VMT 4000 — RVS Compactor</h3>
+            <p class="p-kaart-desc">
+              Ons vlaggenschip. Volledig RVS. Voor voedselverwerking, agrarisch gebruik en offshore. De machine die
+              het langer volhoudt dan de concurrenten.
+            </p>
+            <ul class="p-specs">
+              <li>Materiaal: RVS 304</li>
+              <li>Bestand tegen corrosie 25+ jaar</li>
+            </ul>
+            <a href="#offerte" class="btn-ghost mt-4">Vraag offerte aan →</a>
+          </div>
+        </article>
+
+        <!-- MT 1300 -->
+        <article class="p-kaart">
+          <div class="p-kaart-img" style="min-height: 200px;">
+            <span class="absolute top-4 left-4 label text-velthof-groen z-10" style="font-size:0.66rem;">03</span>
+            <img src="assets/product-mt1300.png" alt="MT 1300 afvalpers voor grotere volumes">
+          </div>
+          <div class="p-kaart-body">
+            <h3 class="p-kaart-title">MT 1300 — Volumepers</h3>
+            <p class="p-kaart-desc">
+              Voor productie- en retailbedrijven met grotere afvalstromen. Drukt volume met 5:1 terug. Grote opening,
+              bediening op voetpedaal.
+            </p>
+            <ul class="p-specs">
+              <li>Perskracht: 130 kN</li>
+              <li>Bediening: voetpedaal / hand</li>
+            </ul>
+            <a href="#offerte" class="btn-ghost mt-4">Vraag offerte aan →</a>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="mt-10 reveal-up">
+        <p
+          style="font-size:0.86rem; color:var(--grauw); margin-bottom:0.5rem; font-family:'Spline Sans Mono', monospace;">
+          + 6 ANDERE CATEGORIEËN</p>
+        <a href="#" class="lnk" style="font-family:'Archivo',sans-serif; font-weight:600; font-size:1.05rem;">
+          Bekijk volledig assortiment: balenpersen, glasbrekers, shredders, occasions →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Over ons -->
+  <section id="over-ons" class="py-20 md:py-32 bg-white border-t border-b" style="border-color:#eee9e1;">
+    <div class="wrap">
+      <div class="grid md:grid-cols-2 gap-10 md:gap-20 items-center">
+
+        <div class="relative overflow-hidden rounded-xl reveal-clip order-1"
+          style="aspect-ratio: 4/5; max-height: 640px;">
+          <img src="assets/VMT-20X.png" alt="Velthof VMT 20X balenpers"
+            class="w-full h-full object-cover" style="filter: contrast(1.05) saturate(0.85);">
+        </div>
+
+        <div class="reveal-up order-2">
+          <span class="section-tag mb-6 inline-flex">OVER ONS</span>
+          <h2 class="display-wide text-staal" style="font-size: clamp(1.7rem, 6vw, 2.85rem); margin:1.25rem 0 1.5rem;">
+            Een werkplaats, geen showroom.
+          </h2>
+          <p style="font-size:1.025rem; line-height:1.75; color:#3a3d42; margin-bottom:1.25rem;">
+            Velthof Milieutechniek is een Nederlands familiebedrijf dat al jaren hetzelfde doet: RVS afvalpersen bouwen
+            die hun belofte waarmaken. Onze klanten komen terug omdat we doen wat we zeggen, niet omdat we mooi praten.
+          </p>
+          <p style="font-size:1.025rem; line-height:1.75; color:#3a3d42; margin-bottom:2rem;">
+            Onze werkplaats aan de Waterwinweg is waar staal wordt gesneden, geslepen, gelast. Waar een machine wordt
+            getest voordat-ie de deur uit gaat. Wie bij ons langskomt, krijgt koffie en een ronde langs de machines die
+            we aan het bouwen zijn.
+          </p>
+
+          <dl style="margin-top:2rem;">
+            <div class="spec-row">
+              <dt>Eigenaar</dt>
+              <dd>Niels</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Locatie</dt>
+              <dd>Waterwinweg 35, 7572 PD Oldenzaal</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Specialisatie</dt>
+              <dd>RVS afvalpersen, maatwerk</dd>
+            </div>
+            <div class="spec-row">
+              <dt>Levering</dt>
+              <dd>Direct af fabriek, geheel Nederland</dd>
+            </div>
+          </dl>
+
+          <a href="#offerte" class="btn-ghost mt-8">Plan een werkplaatsbezoek →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- USP-strofe -->
+  <section class="py-20 md:py-32 bg-staal text-warme-wit">
+    <div class="wrap">
+
+      <div class="reveal-up mb-10 md:mb-14">
+        <span class="section-tag" style="background: rgba(62,142,44,0.18); color: #84c96f;">WAAROM VELTHOF</span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8 md:gap-14">
+
+        <div class="reveal-up">
+          <div class="usp-nummer mb-4">01</div>
+          <h3 class="display" style="font-size:1.4rem; margin:0 0 0.85rem;">Made in Holland</h3>
+          <p style="font-size:0.965rem; line-height:1.7; color:rgba(251,250,248,0.78); margin:0;">
+            RVS vanuit Oldenzaal. Korte lijnen, snelle leverbare onderdelen, geen import-kwaliteit. Wie met ons werkt,
+            praat met de maker.
+          </p>
+        </div>
+
+        <div class="reveal-up">
+          <div class="usp-nummer mb-4">02</div>
+          <h3 class="display" style="font-size:1.4rem; margin:0 0 0.85rem;">Direct af fabriek</h3>
+          <p style="font-size:0.965rem; line-height:1.7; color:rgba(251,250,248,0.78); margin:0;">
+            Geen tussenhandelaars, geen dealer-marge. Je vraagt, wij bouwen, wij leveren. Vandaar onze scherpe prijzen
+            die we niet hoeven te verklaren.
+          </p>
+        </div>
+
+        <div class="reveal-up">
+          <div class="usp-nummer mb-4">03</div>
+          <h3 class="display" style="font-size:1.4rem; margin:0 0 0.85rem;">RVS-specialisme</h3>
+          <p style="font-size:0.965rem; line-height:1.7; color:rgba(251,250,248,0.78); margin:0;">
+            RVS is de reden dat we bestaan, geen bijzaak. Andere persen verzinken, verven, verroesten. Die van
+            ons blijven staan, zelfs na 10 jaar buitengebruik.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA-slot -->
+  <section id="offerte" class="relative py-20 md:py-32 bg-velthof-groen text-warme-wit overflow-hidden">
+    <div class="absolute inset-0"
+      style="background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1.5px, transparent 1.5px); background-size: 24px 24px; opacity:0.6;">
+    </div>
+    <div class="wrap relative">
+      <div class="max-w-2xl reveal-up">
+        <span class="label text-warme-wit/70" style="font-size:0.7rem;">VOLGENDE STAP</span>
+        <h2 class="display-wide mt-4 mb-6" style="font-size: clamp(1.85rem, 7vw, 3.85rem); line-height:0.95;">
+          Klaar om uw afval<br>aan te pakken?
+        </h2>
+        <p
+          style="font-size:1.05rem; color: rgba(251,250,248,0.88); line-height:1.65; margin-bottom:2rem; max-width:52ch;">
+          Bel ons direct, of stuur een e-mail. Binnen 24 uur op werkdagen een reactie. Geen
+          callcenter, geen formulierenmuur. Een mens aan de andere kant.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="tel:+31630627623"
+            class="bg-warme-wit text-staal px-6 py-3.5 rounded-lg font-semibold inline-flex items-center justify-center sm:justify-start gap-2.5 hover:bg-staal hover:text-warme-wit transition-colors"
+            style="font-family:'Archivo',sans-serif; font-weight:600; text-decoration:none;">
+            Bel 06 3062 7623
+          </a>
+          <a href="mailto:info@velthofmilieutechniek.nl"
+            class="text-warme-wit border border-warme-wit/40 px-6 py-3.5 rounded-lg font-semibold inline-flex items-center justify-center sm:justify-start gap-2.5 hover:bg-warme-wit hover:text-staal transition-colors"
+            style="font-family:'Archivo',sans-serif; font-weight:600; text-decoration:none;">
+            Stuur een e-mail
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-staal text-warme-wit/70 pt-14 md:pt-16 pb-10">
+    <div class="wrap">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mb-10">
+        <div class="col-span-2 md:col-span-1">
+          <div class="flex items-center gap-3 mb-4">
+            <img src="assets/velthof-logo.png" alt="Velthof Milieutechniek logo" width="40" height="42"
+              style="max-height:42px;">
+            <div class="display text-warme-wit"
+              style="font-size:0.95rem; font-weight:700; letter-spacing:-0.02em; line-height:1.1;">
+              Velthof<br>Milieutechniek</div>
+          </div>
+          <p style="font-size:0.85rem; line-height:1.65; max-width:30ch;">
+            RVS Afvalpersen, ontwerp en productie. Oldenzaal.
+          </p>
+        </div>
+        <div>
+          <p class="label text-warme-wit/50 mb-3">PRODUCTEN</p>
+          <ul style="list-style:none; padding:0; margin:0; font-size:0.875rem; line-height:1.85;">
+            <li><a href="#" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Afvalpersen</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors" style="text-decoration:none;">RVS
+                Persen</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors" style="text-decoration:none;">Garbage
+                Compactors</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Balenpersen</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Glasbrekers</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Shredders</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label text-warme-wit/50 mb-3">BEDRIJF</p>
+          <ul style="list-style:none; padding:0; margin:0; font-size:0.875rem; line-height:1.85;">
+            <li><a href="#over-ons" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Over ons</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors" style="text-decoration:none;">Cases &
+                klanten</a></li>
+            <li><a href="#" class="hover:text-velthof-groen transition-colors" style="text-decoration:none;">Download
+                catalogus</a></li>
+            <li><a href="#offerte" class="hover:text-velthof-groen transition-colors"
+                style="text-decoration:none;">Offerte aanvragen</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="label text-warme-wit/50 mb-3">CONTACT</p>
+          <address style="font-style:normal; font-size:0.875rem; line-height:1.75;">
+            Waterwinweg 35<br>7572 PD Oldenzaal<br><br>
+            <a href="tel:+31630627623" style="color:inherit; text-decoration:none;">06 3062 7623</a><br>
+            <a href="mailto:info@velthofmilieutechniek.nl"
+              style="color:inherit; text-decoration:none;">info@velthofmilieutechniek.nl</a>
+          </address>
+        </div>
+      </div>
+
+      <div class="pt-7 border-t border-warme-wit/10 flex flex-col sm:flex-row justify-between gap-3"
+        style="font-size:0.72rem; font-family:'Spline Sans Mono', monospace;">
+        <span>© 2026 VELTHOF MILIEUTECHNIEK · OLDENZAAL, NL</span>
+        <span>CONCEPT — STUDIO ORANGE</span>
+      </div>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

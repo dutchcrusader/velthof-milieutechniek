@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Velthof Milieutechniek — Digitaal Platform Concept</title>
+  <meta name="description"
+    content="Interactieve pitch: een digitaal platform van wereldklasse voor Velthof Milieutechniek.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'velthof-groen': '#3e8e2c',
+            'velthof-groen-donker': '#2c6d1f',
+            'velthof-groen-licht': '#6fbf4f',
+            'staal': '#1a1d20',
+            'staal-licht': '#2a2e33',
+            'staal-grauw': '#5a5d62',
+            'warme-wit': '#fbfaf8',
+          },
+          fontFamily: {
+            'display': ['"Archivo"', 'system-ui', 'sans-serif'],
+            'sans': ['"Public Sans"', 'system-ui', 'sans-serif'],
+            'mono': ['"Spline Sans Mono"', 'ui-monospace', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+      overflow-x: hidden;
+      overscroll-behavior: none;
+      overscroll-behavior-x: none;
+      touch-action: pan-y pinch-zoom;
+    }
+
+    body {
+      background: #1a1d20;
+      color: #fbfaf8;
+      font-family: 'Public Sans', system-ui, sans-serif;
+    }
+
+    .display {
+      font-family: 'Archivo', system-ui, sans-serif;
+    }
+
+    .mono {
+      font-family: 'Spline Sans Mono', ui-monospace, monospace;
+      letter-spacing: 0.06em;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #5a5d62;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    #track {
+      display: flex;
+      height: 100vh;
+      height: 100dvh;
+      transition: transform 0.85s cubic-bezier(.65, 0, .35, 1);
+      will-change: transform;
+      touch-action: pan-y pinch-zoom;
+    }
+
+    .slide {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      flex: 0 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hide-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(251, 250, 248, 0.045) 1px, transparent 1px);
+      background-size: 3px 3px;
+      mix-blend-mode: overlay;
+      opacity: 0.6;
+    }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(120% 100% at 50% 10%, rgba(26, 29, 32, 0) 0%, rgba(26, 29, 32, 0.55) 65%, rgba(26, 29, 32, 0.92) 100%);
+    }
+
+    .blueprint-grid {
+      background-image:
+        linear-gradient(rgba(251, 250, 248, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 250, 248, 0.05) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    .glow-dot {
+      box-shadow: 0 0 0 0 rgba(62, 142, 44, 0.55);
+      animation: pulse 2.4s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(62, 142, 44, 0.5);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(62, 142, 44, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(62, 142, 44, 0);
+      }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+
+    @keyframes scrollcue {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: translateY(8px);
+        opacity: 1;
+      }
+    }
+
+    .scroll-cue {
+      animation: scrollcue 1.8s cubic-bezier(.45, 0, .55, 1) infinite;
+    }
+
+    .card-tilt {
+      transition: transform 0.35s cubic-bezier(.2, .9, .3, 1), border-color 0.35s, box-shadow 0.35s;
+    }
+
+    .card-tilt:hover {
+      transform: translateY(-6px);
+      border-color: rgba(62, 142, 44, 0.6);
+      box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(62, 142, 44, 0.15);
+    }
+
+    .sector-chip {
+      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .sector-chip.active {
+      background: #3e8e2c;
+      color: #1a1d20;
+      border-color: #3e8e2c;
+    }
+
+    .site-node {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: flex-start;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .site-node.open {
+      background: rgba(62, 142, 44, 0.08);
+      border-color: rgba(62, 142, 44, 0.5);
+    }
+
+    .site-node .node-detail {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 0.4s ease, opacity 0.3s ease;
+    }
+
+    .site-node .node-detail>* {
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .site-node.open .node-detail {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+
+    .node-chevron {
+      transition: transform 0.3s ease;
+    }
+
+    .site-node.open .node-chevron {
+      transform: rotate(180deg);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(251, 250, 248, 0.25);
+      transition: background-color 0.3s ease;
+      position: relative;
+    }
+
+    .dot::before {
+      content: '';
+      position: absolute;
+      inset: -14px;
+    }
+
+    .dot.active {
+      background: #3e8e2c;
+      width: 26px;
+      border-radius: 999px;
+    }
+
+    .nav-btn {
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: #3e8e2c;
+      border-color: #3e8e2c;
+      color: #1a1d20;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #3e8e2c;
+      box-shadow: 0 0 0 3px rgba(62, 142, 44, 0.15);
+    }
+
+    :focus-visible {
+      outline: 2px solid #3e8e2c;
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+
+    @media (max-height: 720px) and (max-width: 767px) {
+      .slide-inner {
+        padding-top: 1.5rem !important;
+        padding-bottom: 4.5rem !important;
+      }
+
+      .card-tilt .h-36 {
+        height: 5rem;
+      }
+
+      .card-tilt .p-5 {
+        padding: 0.875rem !important;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .mobile-accordion .node-detail {
+        grid-template-rows: 1fr !important;
+        opacity: 1 !important;
+      }
+
+      .mobile-accordion .node-chevron {
+        display: none;
+      }
+
+      .mobile-accordion {
+        cursor: default;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #track {
+        transition: none;
+      }
+
+      .scroll-cue,
+      .glow-dot {
+        animation: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .card-tilt,
+      .sector-chip,
+      .site-node,
+      .node-detail,
+      .node-chevron,
+      .dot,
+      .nav-btn,
+      #progressBar {
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="overflow-hidden">
+
+  <!-- progress bar -->
+  <div class="fixed top-0 left-0 right-0 h-[3px] bg-staal-licht/60 z-50">
+    <div id="progressBar" class="h-full bg-velthof-groen transition-all duration-700 ease-out" style="width: 16.66%;">
+    </div>
+  </div>
+
+  <!-- top bar: logo + slide counter -->
+  <div
+    class="fixed top-3 md:top-5 left-4 md:left-8 right-4 md:right-8 z-40 flex items-center justify-between pointer-events-none">
+    <div class="flex items-center gap-2 md:gap-3 pointer-events-auto">
+      <button id="logoBtn" class="p-0 bg-transparent border-0 cursor-pointer" aria-label="Terug naar eerste slide">
+        <img src="assets/velthof-logo.png" alt="Velthof Milieutechniek" class="w-8 h-8 md:w-9 md:h-9 object-contain">
+      </button>
+      <span class="hidden sm:block mono text-[10px] md:text-xs text-warme-wit/60 uppercase">Velthof
+        Milieutechniek</span>
+    </div>
+    <div class="flex items-center gap-2 pointer-events-auto">
+      <span class="mono text-[10px] md:text-xs text-warme-wit/50 uppercase tracking-wider">Concept — Studio
+        Orange</span>
+      <span id="slideCounter" class="mono text-xs md:text-sm text-velthof-groen">01 / 06</span>
+    </div>
+  </div>
+
+  <!-- dot navigation (desktop, right side) -->
+  <div class="hidden md:flex fixed right-8 top-1/2 -translate-y-1/2 z-40 flex-col gap-4">
+    <button data-goto="0" class="dot active" aria-label="Slide 1"></button>
+    <button data-goto="1" class="dot" aria-label="Slide 2"></button>
+    <button data-goto="2" class="dot" aria-label="Slide 3"></button>
+    <button data-goto="3" class="dot" aria-label="Slide 4"></button>
+    <button data-goto="4" class="dot" aria-label="Slide 5"></button>
+    <button data-goto="5" class="dot" aria-label="Slide 6"></button>
+  </div>
+
+  <!-- prev/next -->
+  <div class="fixed left-0 right-0 z-50 flex items-center justify-center gap-3 px-4 pointer-events-none"
+    style="bottom: calc(1rem + env(safe-area-inset-bottom));">
+    <button id="prevBtn"
+      class="nav-btn pointer-events-auto mono text-xs uppercase flex items-center gap-2 border border-warme-wit/20 text-warme-wit/80 rounded-full px-4 py-2.5 md:px-5 md:py-3"
+      disabled>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M15 18l-6-6 6-6" />
+      </svg>
+      Vorige
+    </button>
+    <button id="nextBtn"
+      class="nav-btn pointer-events-auto mono text-xs uppercase flex items-center gap-2 bg-velthof-groen border border-velthof-groen text-staal font-semibold rounded-full px-5 py-2.5 md:px-6 md:py-3">
+      Volgende
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M9 18l6-6-6-6" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- ============ TRACK ============ -->
+  <div id="track">
+
+    <!-- ============ SLIDE 1 — DE HOOK ============ -->
+    <section class="slide">
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="assets/pexels-alexfu-2967770.jpg" id="heroImg" alt="Geperste balen, resultaat van precisie-machines"
+          class="w-full h-full object-cover scale-110">
+        <div class="absolute inset-0 bg-staal/80"></div>
+        <div class="vignette"></div>
+        <div class="grain-overlay"></div>
+        <div class="absolute inset-0 blueprint-grid opacity-40"></div>
+      </div>
+
+      <div
+        class="relative z-10 h-full slide-inner flex flex-col items-start justify-center text-left px-6 md:px-12 lg:px-24 pt-14 pb-24 md:pt-0 md:pb-28 max-w-7xl mx-auto">
+        <div
+          class="reveal mb-4 md:mb-8 inline-flex items-center gap-2 mono text-[11px] md:text-xs text-velthof-groen-licht uppercase border border-velthof-groen/40 rounded-full px-4 py-2">
+          <span class="w-2 h-2 rounded-full bg-velthof-groen glow-dot"></span>
+          Concept-presentatie Velthof Milieutechniek
+        </div>
+
+        <h1 class="reveal display font-extrabold text-warme-wit leading-[1.05] max-w-4xl"
+          style="font-size: clamp(2rem, 6vw, 4.75rem); text-wrap: balance;">
+          Machines van wereldklasse<br class="hidden md:block">
+          verdienen een <span class="text-velthof-groen">digitaal platform</span><br class="hidden md:block">
+          van wereldklasse.
+        </h1>
+
+        <p class="reveal mt-4 md:mt-8 max-w-xl text-warme-wit/75 text-base md:text-lg leading-relaxed"
+          style="text-wrap: pretty;">
+          Jullie RVS afvalpersen zijn precisiewerk: strak gelast, zwaar getest, gebouwd om jaren mee te gaan.
+          Deze pitch laat zien hoe dat niveau van vakmanschap er digitaal uit hoort te zien.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 2 — DE CONFRONTATIE ============ -->
+    <section class="slide bg-staal">
+      <div class="absolute inset-0 blueprint-grid opacity-30"></div>
+      <div
+        class="relative z-10 min-h-full slide-inner flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-12 pb-24 md:pt-12 md:pb-28 max-w-7xl mx-auto">
+
+        <span class="reveal mono text-xs text-velthof-groen uppercase tracking-widest mb-3 md:mb-4">De
+          Confrontatie</span>
+        <h2 class="reveal display font-bold text-warme-wit leading-tight mb-3 md:mb-8"
+          style="font-size: clamp(1.5rem, 4vw, 3rem);">
+          Jullie machines zijn bij, de website staat stil.
+        </h2>
+        <p class="reveal text-warme-wit/70 max-w-2xl mb-5 md:mb-14 leading-relaxed">
+          Dit is geen kritiek op wat er nu staat: het heeft z'n werk gedaan. Maar sinds 2023 is er niets
+          meer aan veranderd, en in die tijd is B2B-inkoop online radicaal veranderd. Drie dingen kosten
+          jullie nu concreet omzet:
+        </p>
+
+        <div class="reveal grid md:grid-cols-3 gap-3 md:gap-6">
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/40 rounded-2xl p-5 md:p-7"
+            data-node="c0">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 shrink-0 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4M12 16h.01" />
+                  </svg>
+                </div>
+                <h3 class="display font-semibold text-warme-wit">Verouderde uitstraling</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Een inkoper die op zoek is naar een investering van €30.000+ vergelijkt eerst online.
+                Een site die aanvoelt als 2015 wekt twijfel over de machine zelf, terecht of niet.
+              </p>
+            </div>
+          </button>
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/40 rounded-2xl p-5 md:p-7"
+            data-node="c1">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 shrink-0 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                    <path d="M12 8v4l3 3" />
+                    <circle cx="12" cy="12" r="10" />
+                  </svg>
+                </div>
+                <h3 class="display font-semibold text-warme-wit">Stilstand sinds 2023</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Geen nieuwe producten, geen actuele cases, geen signaal dat er een team achter zit dat vooruitkijkt.
+                Concurrenten die wél updaten winnen de eerste indruk.
+              </p>
+            </div>
+          </button>
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/40 rounded-2xl p-5 md:p-7"
+            data-node="c2">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div
+                  class="w-10 h-10 shrink-0 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center justify-center">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+                </div>
+                <h3 class="display font-semibold text-warme-wit">Geen leadgeneratie</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Geen segmentatie per sector, geen duidelijk offertepad, geen manier om bezoekers vast te
+                houden. De site praat, maar vraagt nooit iets terug, dus verdwijnt de bezoeker weer.
+              </p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 3 — DE VISIE ============ -->
+    <section class="slide bg-staal-licht">
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0"
+          style="background: radial-gradient(90% 60% at 15% 0%, rgba(62,142,44,0.16), transparent 60%);"></div>
+        <div class="grain-overlay"></div>
+      </div>
+
+      <div
+        class="relative z-10 min-h-full slide-inner flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-12 pb-24 md:pt-12 md:pb-28 max-w-7xl mx-auto">
+        <span class="reveal mono text-xs text-velthof-groen uppercase tracking-widest mb-3 md:mb-4">De Visie</span>
+        <h2 class="reveal display font-bold text-warme-wit leading-tight mb-3 md:mb-6"
+          style="font-size: clamp(1.5rem, 4vw, 3rem);">
+          Strak, industrieel, en levend onder je aanraking.
+        </h2>
+        <p class="reveal text-warme-wit/70 max-w-2xl mb-5 md:mb-8 leading-relaxed">
+          Geen stockfoto-generiek design. Elk vlak, elke lijn en elke beweging verwijst naar wat jullie
+          bouwen: staal, druk, precisie. De machine reageert op je aanraking. Dat gevoel geven we het platform ook.
+        </p>
+
+        <div
+          class="flex md:grid md:grid-cols-3 gap-4 md:gap-6 overflow-x-auto hide-scrollbar snap-x snap-mandatory -mx-6 px-6 md:mx-0 md:px-0 md:overflow-visible">
+          <div
+            class="reveal card-tilt shrink-0 w-[75%] sm:w-[50%] md:w-auto snap-start border border-warme-wit/10 bg-staal/60 rounded-2xl overflow-hidden">
+            <div class="h-36 md:h-28 bg-warme-wit/95 flex items-center justify-center p-4">
+              <img src="assets/product-vmt4000.png" alt="VMT 4000 afvalpers" class="max-h-full object-contain">
+            </div>
+            <div class="p-5 md:p-6">
+              <h3 class="display font-semibold text-warme-wit mb-1.5">Productshowcase die verkoopt</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">360°-achtige presentatie, specificaties die
+                meebewegen, en details die tonen waarom RVS de juiste keuze is.</p>
+            </div>
+          </div>
+          <div
+            class="reveal card-tilt shrink-0 w-[75%] sm:w-[50%] md:w-auto snap-start border border-warme-wit/10 bg-staal/60 rounded-2xl overflow-hidden">
+            <div class="h-36 md:h-28 bg-warme-wit/95 flex items-center justify-center p-4">
+              <img src="assets/product-vmt1100.png" alt="VMT 1100 afvalpers" class="max-h-full object-contain">
+            </div>
+            <div class="p-5 md:p-6">
+              <h3 class="display font-semibold text-warme-wit mb-1.5">Micro-interacties met betekenis</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Knoppen die reageren als een goed gebouwde machine:
+                direct, strak, zonder overbodige franje. Elke animatie heeft een reden.</p>
+            </div>
+          </div>
+          <div
+            class="reveal card-tilt shrink-0 w-[75%] sm:w-[50%] md:w-auto snap-start border border-warme-wit/10 bg-staal/60 rounded-2xl overflow-hidden">
+            <div class="h-36 md:h-28 bg-warme-wit/95 flex items-center justify-center p-4">
+              <img src="assets/product-mt1300.png" alt="MT 1300 afvalpers" class="max-h-full object-contain">
+            </div>
+            <div class="p-5 md:p-6">
+              <h3 class="display font-semibold text-warme-wit mb-1.5">Vertrouwen door helderheid</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Duidelijke capaciteiten, duidelijke sectoren,
+                duidelijke vervolgstap. Geen ruis tussen bezoeker en offerte.</p>
+            </div>
+          </div>
+        </div>
+
+        <p class="reveal hidden md:block mono text-[11px] text-warme-wit/40 mt-2 uppercase tracking-wider">↑ Beweeg je
+          muis over de kaarten hierboven</p>
+        <p class="reveal md:hidden mono text-[11px] text-warme-wit/40 mt-3 uppercase tracking-wider">← Swipe voor meer →
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 4 — DE TECHNISCHE FUNDERING ============ -->
+    <section class="slide bg-staal">
+      <div class="absolute inset-0 blueprint-grid opacity-30"></div>
+      <div
+        class="relative z-10 min-h-full slide-inner flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-12 pb-24 md:pt-12 md:pb-28 max-w-7xl mx-auto">
+        <span class="reveal mono text-xs text-velthof-groen uppercase tracking-widest mb-3 md:mb-4">De Technische
+          Fundering</span>
+        <h2 class="reveal display font-bold text-warme-wit leading-tight mb-3 md:mb-6"
+          style="font-size: clamp(1.5rem, 4vw, 3rem);">
+          Modern, stabiel en klaar voor de lange termijn.
+        </h2>
+        <p class="reveal text-warme-wit/70 max-w-2xl mb-4 md:mb-12 leading-relaxed">
+          Precies zoals jullie machines: onder de motorkap zit serieuze techniek. Wij zorgen dat het draait.
+        </p>
+
+        <div class="grid md:grid-cols-3 gap-3 md:gap-6 mb-4 md:mb-8">
+          <button
+            class="site-node mobile-accordion text-left reveal border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="f0">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">Fundament</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Op maat gebouwd</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Geen standaardthema, geen page builder. Alleen wat nodig is voor jullie machines,
+                jullie klanten en jullie verkoopproces.
+              </p>
+            </div>
+          </button>
+          <button
+            class="site-node mobile-accordion text-left reveal border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="f1">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">Stabiliteit</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Snel, veilig en overal goed</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Van mobiel tot desktop: snelle laadtijden, solide beveiliging en een technische basis
+                die ook over vijf jaar nog soepel draait.
+              </p>
+            </div>
+          </button>
+          <button
+            class="site-node mobile-accordion text-left reveal border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="f2">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">Precisie</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">GSAP-animatie</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Dezelfde animatietechnologie die door Nike en Google gebruikt wordt. Vloeiend, snel, en met
+                net zoveel controle als een hydraulische pers: niets beweegt toevallig.
+              </p>
+            </div>
+          </button>
+        </div>
+
+        <div class="reveal hidden md:flex items-center gap-3 border-t border-warme-wit/10 pt-6 md:pt-8">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2"
+            class="shrink-0">
+            <path d="M20 6L9 17l-5-5" />
+          </svg>
+          <p class="text-sm text-warme-wit/60"><span class="text-warme-wit font-medium">Resultaat:</span> een platform
+            dat meegroeit met Velthof, zonder dat jullie er omkijken naar hebben.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 5 — DE SITEMAP ============ -->
+    <section class="slide bg-staal-licht">
+      <div class="absolute inset-0 z-0">
+        <div class="grain-overlay"></div>
+      </div>
+      <div
+        class="relative z-10 min-h-full slide-inner flex flex-col justify-center px-6 md:px-16 lg:px-24 pt-12 pb-24 md:pt-12 md:pb-28 max-w-7xl mx-auto">
+        <span class="reveal mono text-xs text-velthof-groen uppercase tracking-widest mb-3 md:mb-4">De Sitemap</span>
+        <h2 class="reveal display font-bold text-warme-wit leading-tight mb-3 md:mb-6"
+          style="font-size: clamp(1.5rem, 4vw, 3rem);">
+          Eén heldere structuur, per sector doorzoekbaar.
+        </h2>
+        <p class="reveal text-warme-wit/70 max-w-2xl mb-4 md:mb-12 leading-relaxed">
+          Vijf pijlers. Klik een kaart open voor de invulling. De kern: bezoekers vinden binnen twee klikken
+          de pers die bij hún sector past.
+        </p>
+
+        <div class="reveal grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6" id="sitemapGrid">
+
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="0">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">01</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Home</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Directe intro, sterkste machine vooraan, sociaal bewijs en één duidelijke actie: offerte of contact.
+              </p>
+            </div>
+          </button>
+
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="1">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">02</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Onze Afvalpersen</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <div>
+                <p class="text-sm text-warme-wit/60 leading-relaxed mt-3 mb-3">
+                  Filterbaar op sector, met machines die meteen relevant zijn:
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  <span
+                    class="sector-chip active text-[10px] mono uppercase border border-velthof-groen/40 rounded-full px-2.5 py-1">Zorg</span>
+                  <span
+                    class="sector-chip text-[10px] mono uppercase border border-warme-wit/20 text-warme-wit/60 rounded-full px-2.5 py-1">Industrie</span>
+                  <span
+                    class="sector-chip text-[10px] mono uppercase border border-warme-wit/20 text-warme-wit/60 rounded-full px-2.5 py-1">Recycling</span>
+                </div>
+              </div>
+            </div>
+          </button>
+
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="2">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">03</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Maatwerk &amp; Engineering</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Voor de klant die geen standaardmachine zoekt: uitleg van het ontwerptraject, van tekening tot
+                oplevering.
+              </p>
+            </div>
+          </button>
+
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="3">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">04</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Service &amp; Onderhoud</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Storingsformulier, onderhoudscontracten en reactietijden: belangrijk voor bestaande klanten, en een
+                vertrouwenssignaal voor nieuwe.
+              </p>
+            </div>
+          </button>
+
+          <button
+            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
+            data-node="4">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">05</div>
+                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Contact &amp; Offerte</h3>
+              </div>
+              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </div>
+            <div class="node-detail">
+              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
+                Eén kort formulier, direct gekoppeld aan sector en machinetype, geen omwegen voor een simpele
+                adviesvraag.
+              </p>
+            </div>
+          </button>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ SLIDE 6 — CALL TO ACTION ============ -->
+    <section class="slide bg-staal">
+      <div class="absolute inset-0 z-0">
+        <div class="absolute inset-0"
+          style="background: radial-gradient(70% 60% at 50% 0%, rgba(62,142,44,0.14), transparent 65%);"></div>
+        <div class="absolute inset-0 blueprint-grid opacity-30"></div>
+        <div class="grain-overlay"></div>
+      </div>
+
+      <div
+        class="relative z-10 min-h-full slide-inner flex items-center justify-center px-6 md:px-12 pt-12 pb-24 md:pt-12 md:pb-28">
+        <div class="max-w-2xl w-full text-center">
+          <span class="reveal mono text-xs text-velthof-groen uppercase tracking-widest mb-4 block">Volgende Stap</span>
+          <h2 class="reveal display font-extrabold text-warme-wit leading-tight mb-3"
+            style="font-size: clamp(1.4rem, 4vw, 2rem);">
+            Zullen we dit concept <br class="sm:hidden">samen tot leven brengen?
+          </h2>
+          <p class="reveal text-warme-wit/70 mb-4 leading-relaxed">
+            Geen verplichtingen, gewoon een kort gesprek van 20 minuten om te kijken of de klik er is,
+            en of dit concept past bij waar Velthof nu staat.
+          </p>
+
+          <form id="intakeForm"
+            class="reveal text-left bg-staal-licht/50 border border-warme-wit/10 rounded-2xl p-3 md:p-5 space-y-1.5">
+            <div class="grid grid-cols-2 gap-2 md:gap-4">
+              <div>
+                <label class="mono text-[10px] uppercase text-warme-wit/50 mb-1.5 block">Naam</label>
+                <input type="text" required placeholder="Niels Velthof"
+                  class="w-full bg-staal border border-warme-wit/15 rounded-lg px-4 py-2.5 text-sm text-warme-wit placeholder:text-warme-wit/45 transition-all">
+              </div>
+              <div>
+                <label class="mono text-[10px] uppercase text-warme-wit/50 mb-1.5 block">E-mailadres</label>
+                <input type="email" required placeholder="niels@velthofmilieutechniek.nl"
+                  class="w-full bg-staal border border-warme-wit/15 rounded-lg px-4 py-2.5 text-sm text-warme-wit placeholder:text-warme-wit/45 transition-all">
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-2 md:gap-4">
+              <div>
+                <label class="mono text-[10px] uppercase text-warme-wit/50 mb-1.5 block">Voorkeursdatum</label>
+                <input type="date"
+                  class="w-full bg-staal border border-warme-wit/15 rounded-lg px-4 py-2.5 text-sm text-warme-wit transition-all">
+              </div>
+              <div>
+                <label class="mono text-[10px] uppercase text-warme-wit/50 mb-1.5 block">Voorkeurstijd</label>
+                <input type="time"
+                  class="w-full bg-staal border border-warme-wit/15 rounded-lg px-4 py-2.5 text-sm text-warme-wit transition-all">
+              </div>
+            </div>
+            <div>
+              <label class="mono text-[10px] uppercase text-warme-wit/50 mb-1.5 block">Opmerking (optioneel)</label>
+              <textarea rows="2" placeholder="Bijvoorbeeld: liever telefonisch, of specifieke vragen vooraf."
+                class="w-full bg-staal border border-warme-wit/15 rounded-lg px-4 py-2.5 text-sm text-warme-wit placeholder:text-warme-wit/45 transition-all resize-none"></textarea>
+            </div>
+            <button type="submit"
+              class="w-full bg-velthof-groen hover:bg-velthof-groen-donker transition-colors text-staal font-semibold rounded-lg py-2.5 mono text-xs uppercase tracking-wider">
+              Plan het intakegesprek
+            </button>
+          </form>
+
+          <div id="formSuccess"
+            class="hidden reveal-shown border border-velthof-groen/40 bg-velthof-groen/10 rounded-2xl p-8 text-center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2"
+              class="mx-auto mb-3">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            <h3 class="display font-semibold text-warme-wit mb-1">Verzonden. Dank je wel, Niels.</h3>
+            <p class="text-sm text-warme-wit/60">We nemen binnen één werkdag contact op om het intakegesprek in te
+              plannen.</p>
+          </div>
+
+          <p class="reveal mono text-[10px] text-warme-wit/30 uppercase tracking-widest mt-3">Studio Orange ·
+            Concept-presentatie · 2026</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+      (function () {
+        const track = document.getElementById('track');
+        const dots = document.querySelectorAll('.dot');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const slideCounter = document.getElementById('slideCounter');
+        const slides = document.querySelectorAll('.slide');
+        const total = slides.length;
+        let current = 0;
+        let animating = false;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        function playReveals(index) {
+          const els = slides[index].querySelectorAll('.reveal');
+          if (!window.gsap || reducedMotion) {
+            els.forEach(el => { el.style.opacity = 1; el.style.transform = 'none'; });
+            return;
+          }
+          gsap.fromTo(els, { y: 28, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.07, ease: 'power3.out', overwrite: true });
+        }
+
+        function getSlideWidth() {
+          return slides[0].getBoundingClientRect().width;
+        }
+
+        function positionTrack() {
+          track.style.transform = `translateX(-${current * getSlideWidth()}px)`;
+        }
+
+        window.addEventListener('resize', () => {
+          const prevTransition = track.style.transition;
+          track.style.transition = 'none';
+          positionTrack();
+          void track.offsetHeight;
+          track.style.transition = prevTransition;
+        });
+
+        function goTo(index) {
+          if (animating) return;
+          index = Math.max(0, Math.min(total - 1, index));
+          if (index === current) return;
+          animating = true;
+          current = index;
+
+          positionTrack();
+
+          dots.forEach(d => d.classList.remove('active'));
+          document.querySelectorAll(`.dot[data-goto="${current}"]`).forEach(d => d.classList.add('active'));
+
+          progressBar.style.width = `${((current + 1) / total) * 100}%`;
+          slideCounter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+
+          prevBtn.disabled = current === 0;
+          nextBtn.textContent = '';
+          if (current === total - 1) {
+            nextBtn.innerHTML = 'Verstuur hierboven';
+            nextBtn.disabled = true;
+          } else {
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = 'Volgende <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline;vertical-align:middle;margin-left:6px"><path d="M9 18l6-6-6-6"/></svg>';
+          }
+
+          setTimeout(() => { playReveals(current); animating = false; }, 120);
+        }
+
+        document.querySelectorAll('[data-goto]').forEach(btn => {
+          btn.addEventListener('click', () => goTo(parseInt(btn.dataset.goto, 10)));
+        });
+        document.getElementById('logoBtn').addEventListener('click', () => goTo(0));
+        prevBtn.addEventListener('click', () => goTo(current - 1));
+        nextBtn.addEventListener('click', () => goTo(current + 1));
+
+        window.addEventListener('keydown', (e) => {
+          const tag = document.activeElement.tagName;
+          if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+          if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+        });
+
+        // block horizontal trackpad / mouse-wheel from changing slides
+        window.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+
+
+        // card / sitemap accordions — only siblings within the same slide close together
+        document.querySelectorAll('.site-node').forEach(node => {
+          node.addEventListener('click', (e) => {
+            e.preventDefault();
+            const group = node.closest('.slide');
+            const isOpen = node.classList.contains('open');
+            group.querySelectorAll('.site-node').forEach(n => n.classList.remove('open'));
+            if (!isOpen) node.classList.add('open');
+          });
+        });
+
+        // sector chips (slide 5, node 1) — cosmetic filter demo
+        document.querySelectorAll('.sector-chip').forEach(chip => {
+          chip.addEventListener('click', (e) => {
+            e.stopPropagation();
+            chip.parentElement.querySelectorAll('.sector-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+          });
+        });
+
+        // hero parallax (subtle, desktop only)
+        const heroImg = document.getElementById('heroImg');
+        if (window.matchMedia('(pointer: fine)').matches && !reducedMotion) {
+          window.addEventListener('mousemove', (e) => {
+            if (current !== 0) return;
+            const x = (e.clientX / window.innerWidth - 0.5) * 14;
+            const y = (e.clientY / window.innerHeight - 0.5) * 14;
+            heroImg.style.transform = `scale(1.12) translate(${x}px, ${y}px)`;
+          });
+        }
+
+        // fake form submit
+        document.getElementById('intakeForm').addEventListener('submit', (e) => {
+          e.preventDefault();
+          const form = e.target;
+          const success = document.getElementById('formSuccess');
+          form.classList.add('hidden');
+          success.classList.remove('hidden');
+          if (window.gsap && !reducedMotion) gsap.fromTo(success, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+        });
+
+        // initial reveal
+        playReveals(0);
+      })();
+  </script>
+</body>
+
+</html>
