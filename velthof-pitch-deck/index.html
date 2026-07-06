@@ -101,6 +101,17 @@
       overflow: hidden;
     }
 
+    .slide.scrollable-mobile {
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+    }
+
+    @media (min-width: 768px) {
+      .slide.scrollable-mobile {
+        overflow: hidden;
+      }
+    }
+
     .hide-scrollbar {
       scrollbar-width: none;
       -ms-overflow-style: none;
@@ -713,7 +724,7 @@
     </section>
 
     <!-- ============ SLIDE 5 — DE SITEMAP ============ -->
-    <section class="slide bg-staal-licht">
+    <section class="slide scrollable-mobile bg-staal-licht">
       <div class="absolute inset-0 z-0">
         <div class="grain-overlay"></div>
       </div>
