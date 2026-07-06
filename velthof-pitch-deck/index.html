@@ -618,8 +618,6 @@
           </div>
         </div>
 
-        <p class="reveal hidden md:block mono text-[11px] text-warme-wit/40 mt-2 uppercase tracking-wider">↑ Beweeg je
-          muis over de kaarten hierboven</p>
         <p class="reveal md:hidden mono text-[11px] text-warme-wit/40 mt-3 uppercase tracking-wider">← Swipe voor meer →
         </p>
       </div>
@@ -727,125 +725,84 @@
           Eén heldere structuur, per sector doorzoekbaar.
         </h2>
         <p class="reveal text-warme-wit/70 max-w-2xl mb-4 md:mb-12 leading-relaxed">
-          Vijf pijlers. Klik een kaart open voor de invulling. De kern: bezoekers vinden binnen twee klikken
-          de pers die bij hún sector past.
+          Vijf pijlers. De kern: bezoekers vinden binnen twee klikken de pers die bij hún sector past.
         </p>
 
-        <div class="reveal grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-6" id="sitemapGrid">
+        <div class="reveal max-w-5xl mx-auto" id="sitemapGrid">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 justify-items-center">
 
-          <button
-            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
-            data-node="0">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">01</div>
-                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Home</h3>
-              </div>
-              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
+          <div
+            class="site-card w-full border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-6 flex flex-col gap-3">
+            <div class="w-10 h-10 rounded-lg bg-velthof-groen/10 border border-velthof-groen/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
               </svg>
             </div>
-            <div class="node-detail">
-              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
-                Directe intro, sterkste machine vooraan, sociaal bewijs en één duidelijke actie: offerte of contact.
-              </p>
+            <div>
+              <h3 class="display font-semibold text-lg text-warme-wit mb-1">Home</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Directe intro, sterke machine, sociaal bewijs en één duidelijke actie.</p>
             </div>
-          </button>
+          </div>
 
-          <button
-            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
-            data-node="1">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">02</div>
-                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Onze Afvalpersen</h3>
-              </div>
-              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
+          <div
+            class="site-card w-full border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-6 flex flex-col gap-3">
+            <div class="w-10 h-10 rounded-lg bg-velthof-groen/10 border border-velthof-groen/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
               </svg>
             </div>
-            <div class="node-detail">
-              <div>
-                <p class="text-sm text-warme-wit/60 leading-relaxed mt-3 mb-3">
-                  Filterbaar op sector, met machines die meteen relevant zijn:
-                </p>
-                <div class="flex flex-wrap gap-1.5">
-                  <span
-                    class="sector-chip active text-[10px] mono uppercase border border-velthof-groen/40 rounded-full px-2.5 py-1">Zorg</span>
-                  <span
-                    class="sector-chip text-[10px] mono uppercase border border-warme-wit/20 text-warme-wit/60 rounded-full px-2.5 py-1">Industrie</span>
-                  <span
-                    class="sector-chip text-[10px] mono uppercase border border-warme-wit/20 text-warme-wit/60 rounded-full px-2.5 py-1">Recycling</span>
-                </div>
-              </div>
+            <div>
+              <h3 class="display font-semibold text-lg text-warme-wit mb-1">Onze Afvalpersen</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Filterbaar op sector: Zorg, Industrie, Recycling.</p>
             </div>
-          </button>
+          </div>
 
-          <button
-            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
-            data-node="2">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">03</div>
-                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Maatwerk &amp; Engineering</h3>
-              </div>
-              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
+          <div
+            class="site-card w-full border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-6 flex flex-col gap-3">
+            <div class="w-10 h-10 rounded-lg bg-velthof-groen/10 border border-velthof-groen/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                <path d="M2 17l10 5 10-5" />
+                <path d="M2 12l10 5 10-5" />
               </svg>
             </div>
-            <div class="node-detail">
-              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
-                Voor de klant die geen standaardmachine zoekt: uitleg van het ontwerptraject, van tekening tot
-                oplevering.
-              </p>
+            <div>
+              <h3 class="display font-semibold text-lg text-warme-wit mb-1">Maatwerk &amp; Engineering</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Van tekening tot oplevering: alles behalve standaard.</p>
             </div>
-          </button>
+          </div>
 
-          <button
-            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
-            data-node="3">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">04</div>
-                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Service &amp; Onderhoud</h3>
-              </div>
-              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
+          <div
+            class="site-card w-full border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-6 flex flex-col gap-3">
+            <div class="w-10 h-10 rounded-lg bg-velthof-groen/10 border border-velthof-groen/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2">
+                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
               </svg>
             </div>
-            <div class="node-detail">
-              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
-                Storingsformulier, onderhoudscontracten en reactietijden: belangrijk voor bestaande klanten, en een
-                vertrouwenssignaal voor nieuwe.
-              </p>
+            <div>
+              <h3 class="display font-semibold text-lg text-warme-wit mb-1">Service &amp; Onderhoud</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Storing, onderhoudscontracten en reactietijden op een rij.</p>
             </div>
-          </button>
+          </div>
 
-          <button
-            class="site-node mobile-accordion text-left border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-8"
-            data-node="4">
-            <div class="flex items-center justify-between gap-3">
-              <div>
-                <div class="mono text-velthof-groen text-xs uppercase tracking-widest mb-1.5 md:mb-3">05</div>
-                <h3 class="display font-semibold text-lg md:text-xl text-warme-wit">Contact &amp; Offerte</h3>
-              </div>
-              <svg class="node-chevron shrink-0" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
+          <div
+            class="site-card w-full border border-warme-wit/10 bg-staal-licht/50 rounded-2xl p-5 md:p-6 flex flex-col gap-3">
+            <div class="w-10 h-10 rounded-lg bg-velthof-groen/10 border border-velthof-groen/30 flex items-center justify-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e8e2c" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                <polyline points="22,6 12,13 2,6" />
               </svg>
             </div>
-            <div class="node-detail">
-              <p class="text-sm text-warme-wit/60 leading-relaxed mt-3">
-                Eén kort formulier, direct gekoppeld aan sector en machinetype, geen omwegen voor een simpele
-                adviesvraag.
-              </p>
+            <div>
+              <h3 class="display font-semibold text-lg text-warme-wit mb-1">Contact &amp; Offerte</h3>
+              <p class="text-sm text-warme-wit/60 leading-relaxed">Één kort formulier, direct gekoppeld aan sector en machine.</p>
             </div>
-          </button>
+          </div>
 
+          </div>
         </div>
       </div>
     </section>
@@ -922,7 +879,8 @@
 
           <p class="reveal mt-5 text-sm text-warme-wit/60">
             Liever eerst zelf rondkijken? <a href="https://studio-orange.nl/velthof/" target="_blank"
-              rel="noopener noreferrer" class="text-velthof-groen hover:text-velthof-groen-licht underline underline-offset-4 transition-colors">Bekijk
+              rel="noopener noreferrer"
+              class="text-velthof-groen hover:text-velthof-groen-licht underline underline-offset-4 transition-colors">Bekijk
               het volledige concept</a>.
           </p>
 
